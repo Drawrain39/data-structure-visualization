@@ -1,0 +1,188 @@
+import { useCallback, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import VisualizerStage from '../components/visualizer/VisualizerStage';
+import CodePanel from '../components/visualizer/CodePanel';
+import ControlsPanel from '../components/visualizer/ControlsPanel';
+import StatsPanel from '../components/visualizer/StatsPanel';
+import AlgorithmInfoPanel from '../components/visualizer/AlgorithmInfoPanel';
+import StepExplanation from '../components/visualizer/StepExplanation';
+import AlgorithmSelect from '../components/visualizer/AlgorithmSelect';
+import { useWasm } from '../hooks/useWasm';
+import type { AlgorithmKey } from '../data/algorithmMeta';
+import type { TraceStep } from '../types';
+import type { Language } from '../data/codeSamples';
+
+const defaultValues = [64, 25, 12, 22, 11, 89, 34, 55];
+
+export default function VisualizerPage() {
+  const { ready, error, generateTrace } = useWasm();
+  const [algorithm, setAlgorithm] = useState<AlgorithmKey>('quick-sort');
+  const [values, setValues] = useState<number[]>(defaultValues);
+  const [steps, setSteps] = useState<TraceStep[]>([]);
+  const [current, setCurrent] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1.2);
+  const [language, setLanguage] = useState<Language>('rust');
+  const [loading, setLoading] = useState(false);
+
+  const step = steps[current] ?? null;
+
+  const loadTrace = useCallback(async () => {
+    if (!ready) return;
+    setLoading(true);
+    try {
+      const trace = await generateTrace(algorithm, values);
+      setSteps(trace);
+      setCurrent(0);
+      setIsPlaying(false);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [ready, algorithm, values, generateTrace]);
+
+  useEffect(() => {
+    loadTrace();
+  }, [loadTrace]);
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      setCurrent((prev) => {
+        if (prev >= steps.length - 1) {
+          setIsPlaying(false);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 800 / speed);
+    return () => clearInterval(interval);
+  }, [isPlaying, steps.length, speed]);
+
+  const handlePlay = () => {
+    if (current >= steps.length - 1) {
+      setCurrent(0);
+    }
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => setIsPlaying(false);
+  const handleNext = () => setCurrent((c) => Math.min(c + 1, steps.length - 1));
+  const handlePrev = () => setCurrent((c) => Math.max(c - 1, 0));
+  const handleReset = () => {
+    setIsPlaying(false);
+    setCurrent(0);
+  };
+  const handleFirst = () => setCurrent(0);
+  const handleLast = () => setCurrent(steps.length - 1);
+
+  const handleRandomize = () => {
+    const count = 10;
+    const next = Array.from({ length: count }, () => Math.floor(Math.random() * 90) + 10);
+    setValues(next);
+  };
+
+  const handleCustomInput = (raw: string) => {
+    const parsed = raw
+      .split(/[,，\s]+/)
+      .map((s) => parseInt(s.trim(), 10))
+      .filter((n) => !Number.isNaN(n))
+      .slice(0, 30);
+    if (parsed.length > 0) {
+      setValues(parsed);
+    }
+  };
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-50">算法可视化</h1>
+          <p className="text-sm text-slate-400">
+            排序核心运行在 Rust / WebAssembly 中
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-4">
+          <AlgorithmSelect value={algorithm} onChange={setAlgorithm} />
+          <input
+            type="text"
+            defaultValue={values.join(', ')}
+            onBlur={(e) => handleCustomInput(e.target.value)}
+            placeholder="输入数字，逗号分隔"
+            className="w-48 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-accent"
+          />
+          <button
+            onClick={handleRandomize}
+            className="rounded-lg bg-slate-800 px-3 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700"
+          >
+            随机数据
+          </button>
+        </div>
+      </div>
+
+      {!ready && (
+        <div className="mb-4 rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-sm text-slate-400">
+          正在加载 WebAssembly 模块...
+        </div>
+      )}
+      {error && (
+        <div className="mb-4 rounded-xl border border-red-900/40 bg-red-950/30 p-4 text-sm text-red-200">
+          WASM 加载失败：{error}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="flex flex-col gap-4 lg:col-span-2">
+          <VisualizerStage step={step} />
+          <ControlsPanel
+            isPlaying={isPlaying}
+            canStepForward={current < steps.length - 1}
+            canStepBack={current > 0}
+            speed={speed}
+            onPlay={handlePlay}
+            onPause={handlePause}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            onReset={handleReset}
+            onFirst={handleFirst}
+            onLast={handleLast}
+            onSpeedChange={setSpeed}
+          />
+          <StatsPanel
+            step={step}
+            totalSteps={steps.length}
+            currentStep={current}
+          />
+          <StepExplanation step={step} />
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="h-[420px] lg:h-[520px]">
+            <CodePanel
+              algorithm={algorithm}
+              language={language}
+              step={step}
+              onLanguageChange={setLanguage}
+            />
+          </div>
+          <AlgorithmInfoPanel algorithm={algorithm} />
+        </div>
+      </div>
+
+      {loading && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="pointer-events-none fixed inset-0 z-40 flex items-center justify-center bg-slate-950/30"
+        >
+          <div className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-slate-200 shadow-xl">
+            生成 trace 中...
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}
