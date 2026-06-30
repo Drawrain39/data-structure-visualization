@@ -10,6 +10,11 @@ pub fn generate_trace(algorithm: &str, values: &[i32]) -> Result<Vec<TraceStep>,
     Ok(match id {
         AlgorithmId::StackPushPop => stack::stack_trace(values),
         AlgorithmId::QueueEnqueueDequeue => queue::queue_trace(values),
-        _ => return Err(format!("algorithm {} is not a stack/queue algorithm", algorithm)),
+        _ => {
+            return Err(format!(
+                "algorithm {} is not a stack/queue algorithm",
+                algorithm
+            ))
+        }
     })
 }

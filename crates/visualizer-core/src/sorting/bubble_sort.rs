@@ -1,4 +1,4 @@
-use crate::types::{ItemId, StepType, TraceStep, build_initial_items};
+use crate::types::{build_initial_items, ItemId, StepType, TraceStep};
 
 pub fn bubble_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut steps = Vec::with_capacity(values.len().max(1) * 3);
@@ -73,7 +73,13 @@ mod tests {
     use crate::types::VisualItem;
 
     fn final_values(steps: &[TraceStep]) -> Vec<i32> {
-        steps.last().unwrap().items.iter().map(|it| it.value).collect()
+        steps
+            .last()
+            .unwrap()
+            .items
+            .iter()
+            .map(|it| it.value)
+            .collect()
     }
 
     fn is_sorted(values: &[VisualItem]) -> bool {

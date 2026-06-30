@@ -1,4 +1,4 @@
-use crate::types::{StepType, TraceStep, build_initial_items};
+use crate::types::{build_initial_items, StepType, TraceStep};
 
 pub fn fibonacci_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut steps = Vec::new();
@@ -23,7 +23,13 @@ pub fn fibonacci_trace(values: &[i32]) -> Vec<TraceStep> {
             TraceStep::new(StepType::Select, "compute")
                 .with_items(items.clone())
                 .with_extra(serde_json::json!({ "i": i, "value": memo[i] }))
-                .with_note(format!("F({}) = F({}) + F({}) = {}", i, i - 1, i - 2, memo[i])),
+                .with_note(format!(
+                    "F({}) = F({}) + F({}) = {}",
+                    i,
+                    i - 1,
+                    i - 2,
+                    memo[i]
+                )),
         );
     }
 

@@ -1,12 +1,14 @@
 import { algorithmMetaMap, type AlgorithmKey } from '../../data/algorithmMeta';
 import { getCodeSample, type Language } from '../../data/codeSamples';
 import type { TraceStep } from '../../types';
+import type { CatalogData } from '../../hooks/useWasm';
 
 interface Props {
   algorithm: AlgorithmKey;
   language: Language;
   step: TraceStep | null;
   onLanguageChange: (lang: Language) => void;
+  catalog?: CatalogData | null;
 }
 
 const languages: { key: Language; label: string }[] = [
@@ -15,14 +17,25 @@ const languages: { key: Language; label: string }[] = [
   { key: 'rust', label: 'Rust' },
 ];
 
-export default function CodePanel({ algorithm, language, step, onLanguageChange }: Props) {
-  const sample = getCodeSample(algorithm);
-  const current = sample?.samples[language];
+export default function CodePanel({ algorithm, language, step, onLanguageChange, catalog }: Props) {
+  // Prefer Rust/WASM catalog for code samples
+  const rustAlgo = catalog?.algoMap.get(algorithm);
+  const tsSample = getCodeSample(algorithm);
+
+  const current = rustAlgo
+    ? rustAlgo.samples[language]
+    : tsSample?.samples[language];
+
+  const lineMap: Record<string, number[]> = rustAlgo
+    ? rustAlgo.line_map
+    : tsSample?.lineMap ?? {};
 
   const activeLines = (() => {
-    if (!sample || !step) return new Set<number>();
-    return new Set(sample.lineMap[step.line_key] ?? []);
+    if (!step) return new Set<number>();
+    return new Set(lineMap[step.line_key] ?? []);
   })();
+
+  const algoName = rustAlgo?.meta.name ?? algorithmMetaMap[algorithm]?.name ?? algorithm;
 
   return (
     <div className="flex h-full flex-col rounded-2xl border border-slate-800 bg-slate-900/80 shadow-2xl overflow-hidden">
@@ -49,7 +62,7 @@ export default function CodePanel({ algorithm, language, step, onLanguageChange 
       <div className="code-panel flex-1 overflow-auto bg-slate-950 p-4">
         {current ? (
           <pre className="m-0">
-            {current.lines.map((line, idx) => {
+            {current.lines.map((line: string, idx: number) => {
               const lineNumber = idx + 1;
               const isActive = activeLines.has(lineNumber);
               return (
@@ -65,7 +78,7 @@ export default function CodePanel({ algorithm, language, step, onLanguageChange 
             })}
           </pre>
         ) : (
-          <div className="text-slate-500">暂无 {algorithmMetaMap[algorithm].name} 的代码示例</div>
+          <div className="text-slate-500">暂无 {algoName} 的代码示例</div>
         )}
       </div>
     </div>

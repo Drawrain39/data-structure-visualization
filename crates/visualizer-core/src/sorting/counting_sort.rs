@@ -1,4 +1,4 @@
-use crate::types::{ItemId, StepType, TraceStep, VisualItem, build_initial_items};
+use crate::types::{build_initial_items, ItemId, StepType, TraceStep, VisualItem};
 
 pub fn counting_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut steps = Vec::with_capacity(values.len().max(1) * 4);
@@ -17,7 +17,13 @@ pub fn counting_sort_trace(values: &[i32]) -> Vec<TraceStep> {
 
     if n <= 1 {
         let sorted: Vec<ItemId> = items.iter().map(|it| it.id).collect();
-        steps.push(TraceStep::new(StepType::Done, "done").with_items(items).with_sorted(sorted).with_stats(comparisons, swaps, writes).with_note("计数排序完成"));
+        steps.push(
+            TraceStep::new(StepType::Done, "done")
+                .with_items(items)
+                .with_sorted(sorted)
+                .with_stats(comparisons, swaps, writes)
+                .with_note("计数排序完成"),
+        );
         return steps;
     }
 
@@ -41,7 +47,11 @@ pub fn counting_sort_trace(values: &[i32]) -> Vec<TraceStep> {
                 .with_items(items.clone())
                 .with_active(vec![item.id])
                 .with_stats(comparisons, swaps, writes)
-                .with_note(format!("计数: {} 出现 {} 次", item.value, count[(item.value - min_val) as usize])),
+                .with_note(format!(
+                    "计数: {} 出现 {} 次",
+                    item.value,
+                    count[(item.value - min_val) as usize]
+                )),
         );
     }
 
@@ -90,14 +100,41 @@ mod tests {
     use crate::types::VisualItem;
 
     fn final_values(steps: &[TraceStep]) -> Vec<i32> {
-        steps.last().unwrap().items.iter().map(|it| it.value).collect()
+        steps
+            .last()
+            .unwrap()
+            .items
+            .iter()
+            .map(|it| it.value)
+            .collect()
     }
     fn is_sorted(values: &[VisualItem]) -> bool {
         values.windows(2).all(|w| w[0].value <= w[1].value)
     }
 
-    #[test] fn test_empty() { let steps = counting_sort_trace(&[]); assert_eq!(steps.len(), 2); assert!(steps.last().unwrap().items.is_empty()); }
-    #[test] fn test_single() { let steps = counting_sort_trace(&[42]); assert!(is_sorted(&steps.last().unwrap().items)); }
-    #[test] fn test_duplicate() { let values = vec![3, 1, 4, 1, 5, 9, 2, 6]; let steps = counting_sort_trace(&values); assert!(is_sorted(&steps.last().unwrap().items)); assert_eq!(final_values(&steps), vec![1, 1, 2, 3, 4, 5, 6, 9]); }
-    #[test] fn test_random() { let values = vec![5, 3, 8, 4, 2]; let steps = counting_sort_trace(&values); assert!(is_sorted(&steps.last().unwrap().items)); assert_eq!(final_values(&steps), vec![2, 3, 4, 5, 8]); }
+    #[test]
+    fn test_empty() {
+        let steps = counting_sort_trace(&[]);
+        assert_eq!(steps.len(), 2);
+        assert!(steps.last().unwrap().items.is_empty());
+    }
+    #[test]
+    fn test_single() {
+        let steps = counting_sort_trace(&[42]);
+        assert!(is_sorted(&steps.last().unwrap().items));
+    }
+    #[test]
+    fn test_duplicate() {
+        let values = vec![3, 1, 4, 1, 5, 9, 2, 6];
+        let steps = counting_sort_trace(&values);
+        assert!(is_sorted(&steps.last().unwrap().items));
+        assert_eq!(final_values(&steps), vec![1, 1, 2, 3, 4, 5, 6, 9]);
+    }
+    #[test]
+    fn test_random() {
+        let values = vec![5, 3, 8, 4, 2];
+        let steps = counting_sort_trace(&values);
+        assert!(is_sorted(&steps.last().unwrap().items));
+        assert_eq!(final_values(&steps), vec![2, 3, 4, 5, 8]);
+    }
 }

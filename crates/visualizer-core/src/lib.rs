@@ -30,30 +30,34 @@ pub fn list_algorithms(category: AlgorithmCategory) -> Vec<AlgorithmId> {
     use AlgorithmId::*;
     match category {
         AlgorithmCategory::Sorting => vec![
-            SelectionSort, BubbleSort, InsertionSort, MergeSort, QuickSort, HeapSort, ShellSort,
-            CountingSort, BucketSort, RadixSort,
+            SelectionSort,
+            BubbleSort,
+            InsertionSort,
+            MergeSort,
+            QuickSort,
+            HeapSort,
+            ShellSort,
+            CountingSort,
+            BucketSort,
+            RadixSort,
         ],
-        AlgorithmCategory::Searching => vec![
-            LinearSearch, BinarySearch, InterpolationSearch, HashSearch,
-        ],
-        AlgorithmCategory::Linear => vec![
-            ArrayInsert, ArrayDelete, LinkedListTraverse,
-        ],
-        AlgorithmCategory::StackQueue => vec![
-            StackPushPop, QueueEnqueueDequeue,
-        ],
-        AlgorithmCategory::Recursive => vec![
-            Factorial, Fibonacci, TowerOfHanoi,
-        ],
+        AlgorithmCategory::Searching => {
+            vec![LinearSearch, BinarySearch, InterpolationSearch, HashSearch]
+        }
+        AlgorithmCategory::Linear => vec![ArrayInsert, ArrayDelete, LinkedListTraverse],
+        AlgorithmCategory::StackQueue => vec![StackPushPop, QueueEnqueueDequeue],
+        AlgorithmCategory::Recursive => vec![Factorial, Fibonacci, TowerOfHanoi],
         AlgorithmCategory::Tree => vec![
-            BstInsert, BstSearch, HeapInsert, AvlInsert,
-            BstPreOrder, BstInOrder, BstPostOrder, BstLevelOrder,
+            BstInsert,
+            BstSearch,
+            HeapInsert,
+            AvlInsert,
+            BstPreOrder,
+            BstInOrder,
+            BstPostOrder,
+            BstLevelOrder,
         ],
-        AlgorithmCategory::Graph => vec![
-            Bfs, Dfs, Dijkstra, TopologicalSort, Kruskal, Prim,
-        ],
-        AlgorithmCategory::Dp => vec![
-            FibonacciDp, Knapsack, LCS, LIS,
-        ],
+        AlgorithmCategory::Graph => vec![Bfs, Dfs, Dijkstra, TopologicalSort, Kruskal, Prim],
+        AlgorithmCategory::Dp => vec![FibonacciDp, Knapsack, LCS, LIS],
     }
 }

@@ -1,4 +1,4 @@
-use crate::types::{StepType, TraceStep, VisualItem, build_initial_items};
+use crate::types::{build_initial_items, StepType, TraceStep, VisualItem};
 
 pub fn bst_search_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut steps = Vec::new();

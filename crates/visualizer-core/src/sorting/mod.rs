@@ -26,7 +26,12 @@ pub fn generate_trace(algorithm: &str, values: &[i32]) -> Result<Vec<TraceStep>,
         AlgorithmId::CountingSort => counting_sort::counting_sort_trace(values),
         AlgorithmId::BucketSort => bucket_sort::bucket_sort_trace(values),
         AlgorithmId::RadixSort => radix_sort::radix_sort_trace(values),
-        _ => return Err(format!("algorithm {} is not implemented in sorting module", algorithm)),
+        _ => {
+            return Err(format!(
+                "algorithm {} is not implemented in sorting module",
+                algorithm
+            ))
+        }
     })
 }
 
@@ -34,8 +39,16 @@ pub fn list_by_category(category: AlgorithmCategory) -> Vec<AlgorithmId> {
     use AlgorithmId::*;
     match category {
         AlgorithmCategory::Sorting => vec![
-            SelectionSort, BubbleSort, InsertionSort, MergeSort, QuickSort, HeapSort, ShellSort,
-            CountingSort, BucketSort, RadixSort,
+            SelectionSort,
+            BubbleSort,
+            InsertionSort,
+            MergeSort,
+            QuickSort,
+            HeapSort,
+            ShellSort,
+            CountingSort,
+            BucketSort,
+            RadixSort,
         ],
         _ => Vec::new(),
     }

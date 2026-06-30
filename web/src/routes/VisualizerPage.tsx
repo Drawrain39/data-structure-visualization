@@ -12,46 +12,19 @@ import type { AlgorithmKey } from '../data/algorithmMeta';
 import type { TraceStep } from '../types';
 import type { Language } from '../data/codeSamples';
 
-const defaultValues: Record<AlgorithmKey, number[]> = {
-  'selection-sort': [64, 25, 12, 22, 11, 89, 34, 55],
+// Fallback default values when WASM not yet loaded
+const fallbackDefaults: Record<string, number[]> = {
+  'quick-sort': [10, 7, 8, 9, 1, 5],
   'bubble-sort': [64, 25, 12, 22, 11, 89, 34, 55],
+  'selection-sort': [64, 25, 12, 22, 11, 89, 34, 55],
   'insertion-sort': [64, 25, 12, 22, 11, 89, 34, 55],
   'merge-sort': [38, 27, 43, 3, 9, 82, 10],
-  'quick-sort': [10, 7, 8, 9, 1, 5],
   'heap-sort': [12, 11, 13, 5, 6, 7],
-  'shell-sort': [12, 34, 54, 2, 3, 7, 8, 99],
-  'counting-sort': [3, 1, 4, 1, 5, 9, 2, 6],
-  'bucket-sort': [78, 17, 39, 26, 72, 94, 21, 12],
-  'radix-sort': [170, 45, 75, 90, 802, 24, 2, 66],
-  'linear-search': [3, 1, 4, 1, 5, 9, 2, 6],
   'binary-search': [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  'interpolation-search': [10, 20, 30, 40, 50, 60, 70, 80],
-  'hash-search': [10, 20, 30, 40, 50],
-  'array-insert': [1, 2, 3, 4, 5, 99],
-  'array-delete': [10, 20, 30, 40, 50],
-  'linked-list-traverse': [10, 20, 30, 40, 50],
-  'stack-push-pop': [1, 2, 3, 4, 5],
-  'queue-enqueue-dequeue': [1, 2, 3, 4, 5],
-  'factorial': [5],
-  'fibonacci': [8],
-  'tower-of-hanoi': [3],
-  'bst-insert': [50, 30, 70, 20, 40, 60, 80],
-  'bst-search': [50, 30, 70, 20, 40, 60, 80],
-  'heap-insert': [10, 20, 5, 30, 15],
-  'avl-insert': [50, 30, 70, 20, 40, 60, 80],
-  'bst-preorder': [1, 2, 3, 4, 5, 6, 7],
-  'bst-inorder': [1, 2, 3, 4, 5, 6, 7],
-  'bst-postorder': [1, 2, 3, 4, 5, 6, 7],
-  'bst-levelorder': [1, 2, 3, 4, 5, 6, 7],
+  'linear-search': [3, 1, 4, 1, 5, 9, 2, 6],
   'bfs': [1, 2, 3, 4, 5, 6],
   'dfs': [1, 2, 3, 4, 5, 6],
-  'dijkstra': [0, 4, 2, 7, 1, 5],
-  'topological-sort': [1, 2, 3, 4, 5],
-  'kruskal': [4, 8, 1, 3, 7],
-  'prim': [4, 8, 1, 3, 7],
   'fibonacci-dp': [8],
-  'knapsack': [10, 2, 3, 4, 5],
-  'lcs': [5, 5],
   'lis': [10, 9, 2, 5, 3, 7, 101, 18],
 };
 
@@ -64,10 +37,10 @@ function parseValues(raw: string): number[] {
 }
 
 export default function VisualizerPage() {
-  const { ready, error: wasmError, generateTrace } = useWasm();
+  const { ready, error: wasmError, generateTrace, catalog, getDefaultValues } = useWasm();
   const [algorithm, setAlgorithm] = useState<AlgorithmKey>('quick-sort');
-  const [values, setValues] = useState<number[]>(defaultValues['quick-sort']);
-  const [inputText, setInputText] = useState(values.join(', '));
+  const [values, setValues] = useState<number[]>([10, 7, 8, 9, 1, 5]);
+  const [inputText, setInputText] = useState('10, 7, 8, 9, 1, 5');
   const [steps, setSteps] = useState<TraceStep[]>([]);
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -80,7 +53,7 @@ export default function VisualizerPage() {
 
   const step = steps[current] ?? null;
 
-  // Keep inputText in sync when values actually change from outside (algorithm change / randomize)
+  // Keep inputText in sync when values actually change
   useEffect(() => {
     setInputText(values.join(', '));
   }, [values]);
@@ -104,7 +77,6 @@ export default function VisualizerPage() {
     }
   }, [ready, algorithm, values, generateTrace]);
 
-  // Generate trace only when ready, algorithm, or values really change.
   useEffect(() => {
     loadTrace();
   }, [algorithm, values, ready]);
@@ -136,7 +108,12 @@ export default function VisualizerPage() {
 
   const handleAlgorithmChange = (nextAlgorithm: AlgorithmKey) => {
     setAlgorithm(nextAlgorithm);
-    const nextValues = defaultValues[nextAlgorithm];
+    // Use Rust/WASM catalog for default values when available
+    const rustDefaults = ready ? getDefaultValues(nextAlgorithm) : null;
+    const nextValues =
+      rustDefaults && rustDefaults.length > 0
+        ? rustDefaults
+        : fallbackDefaults[nextAlgorithm] ?? [1, 2, 3, 4, 5];
     setValues(nextValues);
     setInputText(nextValues.join(', '));
     setCurrent(0);
@@ -187,11 +164,15 @@ export default function VisualizerPage() {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-50">算法可视化</h1>
-          <p className="text-sm text-slate-400">排序核心运行在 Rust / WebAssembly 中</p>
+          <p className="text-sm text-slate-400">
+            {catalog
+              ? `核心运行在 Rust / WebAssembly 中 — ${catalog.algorithms.length} 个算法可用`
+              : '排序核心运行在 Rust / WebAssembly 中'}
+          </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <AlgorithmSelect value={algorithm} onChange={handleAlgorithmChange} />
+          <AlgorithmSelect value={algorithm} onChange={handleAlgorithmChange} catalog={catalog} />
           <input
             type="text"
             value={inputText}
@@ -261,9 +242,10 @@ export default function VisualizerPage() {
               language={language}
               step={step}
               onLanguageChange={setLanguage}
+              catalog={catalog}
             />
           </div>
-          <AlgorithmInfoPanel algorithm={algorithm} />
+          <AlgorithmInfoPanel algorithm={algorithm} catalog={catalog} />
         </div>
       </div>
 

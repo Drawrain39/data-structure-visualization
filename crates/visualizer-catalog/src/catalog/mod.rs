@@ -92,14 +92,14 @@ macro_rules! meta_simple {
 
 // ── Sub-modules ────────────────────────────────────────────────────────────
 
-pub mod sorting;
-pub mod searching;
-pub mod linear;
-pub mod stack_queue;
-pub mod recursion;
-pub mod tree;
-pub mod graph;
 pub mod dp;
+pub mod graph;
+pub mod linear;
+pub mod recursion;
+pub mod searching;
+pub mod sorting;
+pub mod stack_queue;
+pub mod tree;
 
 // ── Imports for query helpers ──────────────────────────────────────────────
 
@@ -109,14 +109,38 @@ use crate::types::*;
 
 pub fn category_labels() -> Vec<CategoryInfo> {
     vec![
-        CategoryInfo { key: "sorting".into(), label: "排序".into() },
-        CategoryInfo { key: "searching".into(), label: "查找".into() },
-        CategoryInfo { key: "linear".into(), label: "线性表".into() },
-        CategoryInfo { key: "stack-queue".into(), label: "栈与队列".into() },
-        CategoryInfo { key: "recursive".into(), label: "递归".into() },
-        CategoryInfo { key: "tree".into(), label: "树".into() },
-        CategoryInfo { key: "graph".into(), label: "图".into() },
-        CategoryInfo { key: "dp".into(), label: "动态规划".into() },
+        CategoryInfo {
+            key: "sorting".into(),
+            label: "排序".into(),
+        },
+        CategoryInfo {
+            key: "searching".into(),
+            label: "查找".into(),
+        },
+        CategoryInfo {
+            key: "linear".into(),
+            label: "线性表".into(),
+        },
+        CategoryInfo {
+            key: "stack-queue".into(),
+            label: "栈与队列".into(),
+        },
+        CategoryInfo {
+            key: "recursive".into(),
+            label: "递归".into(),
+        },
+        CategoryInfo {
+            key: "tree".into(),
+            label: "树".into(),
+        },
+        CategoryInfo {
+            key: "graph".into(),
+            label: "图".into(),
+        },
+        CategoryInfo {
+            key: "dp".into(),
+            label: "动态规划".into(),
+        },
     ]
 }
 
@@ -167,20 +191,29 @@ pub fn get_single_code_sample(algorithm: &str, lang: &str) -> Option<String> {
         "rust" => &entry.samples.rust.lines,
         _ => return None,
     };
-    Some(serde_json::to_string(&serde_json::json!({
-        "algorithm": algorithm,
-        "language": lang,
-        "lines": lines,
-        "lineMap": entry.line_map,
-    })).unwrap_or_default())
+    Some(
+        serde_json::to_string(&serde_json::json!({
+            "algorithm": algorithm,
+            "language": lang,
+            "lines": lines,
+            "lineMap": entry.line_map,
+        }))
+        .unwrap_or_default(),
+    )
 }
 
 pub fn get_line_map(algorithm: &str) -> Option<LineMap> {
-    build_catalog().iter().find(|e| e.algorithm == algorithm).map(|e| e.line_map.clone())
+    build_catalog()
+        .iter()
+        .find(|e| e.algorithm == algorithm)
+        .map(|e| e.line_map.clone())
 }
 
 pub fn get_meta(algorithm: &str) -> Option<AlgorithmMeta> {
-    build_catalog().iter().find(|e| e.algorithm == algorithm).map(|e| e.meta.clone())
+    build_catalog()
+        .iter()
+        .find(|e| e.algorithm == algorithm)
+        .map(|e| e.meta.clone())
 }
 
 pub fn get_default_values(algorithm: &str) -> Vec<i32> {
@@ -216,7 +249,9 @@ pub fn get_default_values(algorithm: &str) -> Vec<i32> {
         "bst-insert" | "bst-search" => vec![50, 30, 70, 20, 40, 60, 80],
         "heap-insert" => vec![10, 20, 5, 30, 15],
         "avl-insert" => vec![50, 30, 70, 20, 40, 60, 80],
-        "bst-preorder" | "bst-inorder" | "bst-postorder" | "bst-levelorder" => vec![1, 2, 3, 4, 5, 6, 7],
+        "bst-preorder" | "bst-inorder" | "bst-postorder" | "bst-levelorder" => {
+            vec![1, 2, 3, 4, 5, 6, 7]
+        }
 
         // Graph
         "bfs" | "dfs" => vec![1, 2, 3, 4, 5, 6],
@@ -245,28 +280,60 @@ mod tests {
         let catalog = build_catalog();
         assert_eq!(catalog.len(), 40, "catalog should have 40 algorithms");
         for entry in &catalog {
-            assert!(!entry.meta.name.is_empty(), "{} missing name", entry.algorithm);
-            assert!(!entry.meta.description.is_empty(), "{} missing description", entry.algorithm);
+            assert!(
+                !entry.meta.name.is_empty(),
+                "{} missing name",
+                entry.algorithm
+            );
+            assert!(
+                !entry.meta.description.is_empty(),
+                "{} missing description",
+                entry.algorithm
+            );
         }
     }
 
     #[test]
     fn test_all_algorithms_have_three_language_samples() {
         for entry in build_catalog() {
-            assert!(!entry.samples.cpp.lines.is_empty(), "{} missing C++ code", entry.algorithm);
-            assert!(!entry.samples.python.lines.is_empty(), "{} missing Python code", entry.algorithm);
-            assert!(!entry.samples.rust.lines.is_empty(), "{} missing Rust code", entry.algorithm);
+            assert!(
+                !entry.samples.cpp.lines.is_empty(),
+                "{} missing C++ code",
+                entry.algorithm
+            );
+            assert!(
+                !entry.samples.python.lines.is_empty(),
+                "{} missing Python code",
+                entry.algorithm
+            );
+            assert!(
+                !entry.samples.rust.lines.is_empty(),
+                "{} missing Rust code",
+                entry.algorithm
+            );
         }
     }
 
     #[test]
     fn test_all_algorithms_have_line_maps() {
         for entry in build_catalog() {
-            assert!(!entry.line_map.is_empty(), "{} missing lineMap", entry.algorithm);
+            assert!(
+                !entry.line_map.is_empty(),
+                "{} missing lineMap",
+                entry.algorithm
+            );
             let done = entry.line_map.get("done");
-            assert!(done.is_some(), "{} lineMap missing 'done' key", entry.algorithm);
+            assert!(
+                done.is_some(),
+                "{} lineMap missing 'done' key",
+                entry.algorithm
+            );
             let lines = done.unwrap();
-            assert!(!lines.is_empty(), "{} 'done' has empty line list", entry.algorithm);
+            assert!(
+                !lines.is_empty(),
+                "{} 'done' has empty line list",
+                entry.algorithm
+            );
         }
     }
 
@@ -275,7 +342,11 @@ mod tests {
         let catalog = build_catalog();
         for entry in &catalog {
             let id = visualizer_core::AlgorithmId::from_name(&entry.algorithm);
-            assert!(id.is_some(), "algorithm '{}' not found in visualizer-core AlgorithmId", entry.algorithm);
+            assert!(
+                id.is_some(),
+                "algorithm '{}' not found in visualizer-core AlgorithmId",
+                entry.algorithm
+            );
         }
     }
 }

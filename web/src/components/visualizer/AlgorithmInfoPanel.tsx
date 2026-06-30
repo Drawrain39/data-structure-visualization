@@ -1,11 +1,26 @@
 import { algorithmMetaMap, type AlgorithmKey } from '../../data/algorithmMeta';
+import type { CatalogData } from '../../hooks/useWasm';
 
 interface Props {
   algorithm: AlgorithmKey;
+  catalog?: CatalogData | null;
 }
 
-export default function AlgorithmInfoPanel({ algorithm }: Props) {
-  const meta = algorithmMetaMap[algorithm];
+export default function AlgorithmInfoPanel({ algorithm, catalog }: Props) {
+  // Prefer Rust/WASM catalog when available
+  const rustMeta = catalog?.algoMap.get(algorithm)?.meta;
+  const meta = rustMeta ?? algorithmMetaMap[algorithm];
+
+  if (!meta) {
+    return (
+      <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-xl">
+        <p className="text-sm text-slate-400">加载算法信息中...</p>
+      </div>
+    );
+  }
+
+  const complexity = meta.complexity;
+  const useCases = 'use_cases' in meta ? (meta as { use_cases: string[] }).use_cases : meta.useCases;
 
   return (
     <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-xl">
@@ -18,18 +33,18 @@ export default function AlgorithmInfoPanel({ algorithm }: Props) {
       </div>
 
       <div className="grid grid-cols-2 gap-4 text-sm">
-        <InfoRow label="时间复杂度" value={meta.complexity.time} />
-        {meta.complexity.best && <InfoRow label="最好" value={meta.complexity.best} />}
-        {meta.complexity.average && <InfoRow label="平均" value={meta.complexity.average} />}
-        {meta.complexity.worst && <InfoRow label="最坏" value={meta.complexity.worst} />}
-        <InfoRow label="空间复杂度" value={meta.complexity.space} />
+        <InfoRow label="时间复杂度" value={complexity.time} />
+        {complexity.best && <InfoRow label="最好" value={complexity.best} />}
+        {complexity.average && <InfoRow label="平均" value={complexity.average} />}
+        {complexity.worst && <InfoRow label="最坏" value={complexity.worst} />}
+        <InfoRow label="空间复杂度" value={complexity.space} />
         {meta.stable && <InfoRow label="稳定性" value={meta.stable} />}
       </div>
 
       <div className="mt-4">
         <span className="text-xs font-medium text-slate-400">适用场景</span>
         <div className="mt-2 flex flex-wrap gap-2">
-          {meta.useCases.map((use) => (
+          {useCases.map((use: string) => (
             <span
               key={use}
               className="rounded-full bg-slate-800 px-2.5 py-1 text-xs text-slate-300"

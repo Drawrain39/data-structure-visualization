@@ -78,18 +78,56 @@ impl TraceStep {
         }
     }
 
-    pub fn with_items(mut self, items: Vec<VisualItem>) -> Self { self.items = items; self }
-    pub fn with_active(mut self, active: Vec<ItemId>) -> Self { self.active = active; self }
-    pub fn with_comparing(mut self, comparing: Vec<ItemId>) -> Self { self.comparing = comparing; self }
-    pub fn with_swapping(mut self, swapping: Vec<ItemId>) -> Self { self.swapping = swapping; self }
-    pub fn with_sorted(mut self, sorted: Vec<ItemId>) -> Self { self.sorted = sorted; self }
-    pub fn with_pivot(mut self, pivot_id: ItemId) -> Self { self.pivot_id = Some(pivot_id); self }
-    pub fn with_min(mut self, min_id: ItemId) -> Self { self.min_id = Some(min_id); self }
-    pub fn with_boundary(mut self, boundary_id: ItemId) -> Self { self.boundary_id = Some(boundary_id); self }
-    pub fn with_range(mut self, range: (usize, usize)) -> Self { self.range = Some(range); self }
-    pub fn with_stats(mut self, comparisons: usize, swaps: usize, writes: usize) -> Self { self.comparisons = comparisons; self.swaps = swaps; self.writes = writes; self }
-    pub fn with_note(mut self, note: impl Into<String>) -> Self { self.note = note.into(); self }
-    pub fn with_extra(mut self, extra: serde_json::Value) -> Self { self.extra = extra; self }
+    pub fn with_items(mut self, items: Vec<VisualItem>) -> Self {
+        self.items = items;
+        self
+    }
+    pub fn with_active(mut self, active: Vec<ItemId>) -> Self {
+        self.active = active;
+        self
+    }
+    pub fn with_comparing(mut self, comparing: Vec<ItemId>) -> Self {
+        self.comparing = comparing;
+        self
+    }
+    pub fn with_swapping(mut self, swapping: Vec<ItemId>) -> Self {
+        self.swapping = swapping;
+        self
+    }
+    pub fn with_sorted(mut self, sorted: Vec<ItemId>) -> Self {
+        self.sorted = sorted;
+        self
+    }
+    pub fn with_pivot(mut self, pivot_id: ItemId) -> Self {
+        self.pivot_id = Some(pivot_id);
+        self
+    }
+    pub fn with_min(mut self, min_id: ItemId) -> Self {
+        self.min_id = Some(min_id);
+        self
+    }
+    pub fn with_boundary(mut self, boundary_id: ItemId) -> Self {
+        self.boundary_id = Some(boundary_id);
+        self
+    }
+    pub fn with_range(mut self, range: (usize, usize)) -> Self {
+        self.range = Some(range);
+        self
+    }
+    pub fn with_stats(mut self, comparisons: usize, swaps: usize, writes: usize) -> Self {
+        self.comparisons = comparisons;
+        self.swaps = swaps;
+        self.writes = writes;
+        self
+    }
+    pub fn with_note(mut self, note: impl Into<String>) -> Self {
+        self.note = note.into();
+        self
+    }
+    pub fn with_extra(mut self, extra: serde_json::Value) -> Self {
+        self.extra = extra;
+        self
+    }
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -107,23 +145,53 @@ pub enum AlgorithmCategory {
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub enum AlgorithmId {
     // Sorting
-    SelectionSort, BubbleSort, InsertionSort, QuickSort, MergeSort, HeapSort, ShellSort,
-    CountingSort, BucketSort, RadixSort,
+    SelectionSort,
+    BubbleSort,
+    InsertionSort,
+    QuickSort,
+    MergeSort,
+    HeapSort,
+    ShellSort,
+    CountingSort,
+    BucketSort,
+    RadixSort,
     // Searching
-    LinearSearch, BinarySearch, InterpolationSearch, HashSearch,
+    LinearSearch,
+    BinarySearch,
+    InterpolationSearch,
+    HashSearch,
     // Linear
-    ArrayInsert, ArrayDelete, LinkedListTraverse,
+    ArrayInsert,
+    ArrayDelete,
+    LinkedListTraverse,
     // Stack & Queue
-    StackPushPop, QueueEnqueueDequeue,
+    StackPushPop,
+    QueueEnqueueDequeue,
     // Recursive
-    Factorial, Fibonacci, TowerOfHanoi,
+    Factorial,
+    Fibonacci,
+    TowerOfHanoi,
     // Tree
-    BstInsert, BstSearch, HeapInsert, AvlInsert,
-    BstPreOrder, BstInOrder, BstPostOrder, BstLevelOrder,
+    BstInsert,
+    BstSearch,
+    HeapInsert,
+    AvlInsert,
+    BstPreOrder,
+    BstInOrder,
+    BstPostOrder,
+    BstLevelOrder,
     // Graph
-    Bfs, Dfs, Dijkstra, TopologicalSort, Kruskal, Prim,
+    Bfs,
+    Dfs,
+    Dijkstra,
+    TopologicalSort,
+    Kruskal,
+    Prim,
     // DP
-    FibonacciDp, Knapsack, LCS, LIS,
+    FibonacciDp,
+    Knapsack,
+    LCS,
+    LIS,
 }
 
 impl AlgorithmId {
@@ -175,21 +243,48 @@ impl AlgorithmId {
 
     pub fn category(self) -> AlgorithmCategory {
         match self {
-            Self::SelectionSort|Self::BubbleSort|Self::InsertionSort|Self::QuickSort|
-            Self::MergeSort|Self::HeapSort|Self::ShellSort|Self::CountingSort|
-            Self::BucketSort|Self::RadixSort => AlgorithmCategory::Sorting,
-            Self::LinearSearch|Self::BinarySearch|Self::InterpolationSearch|Self::HashSearch => AlgorithmCategory::Searching,
-            Self::ArrayInsert|Self::ArrayDelete|Self::LinkedListTraverse => AlgorithmCategory::Linear,
-            Self::StackPushPop|Self::QueueEnqueueDequeue => AlgorithmCategory::StackQueue,
-            Self::Factorial|Self::Fibonacci|Self::TowerOfHanoi => AlgorithmCategory::Recursive,
-            Self::BstInsert|Self::BstSearch|Self::HeapInsert|Self::AvlInsert|
-            Self::BstPreOrder|Self::BstInOrder|Self::BstPostOrder|Self::BstLevelOrder => AlgorithmCategory::Tree,
-            Self::Bfs|Self::Dfs|Self::Dijkstra|Self::TopologicalSort|Self::Kruskal|Self::Prim => AlgorithmCategory::Graph,
-            Self::FibonacciDp|Self::Knapsack|Self::LCS|Self::LIS => AlgorithmCategory::Dp,
+            Self::SelectionSort
+            | Self::BubbleSort
+            | Self::InsertionSort
+            | Self::QuickSort
+            | Self::MergeSort
+            | Self::HeapSort
+            | Self::ShellSort
+            | Self::CountingSort
+            | Self::BucketSort
+            | Self::RadixSort => AlgorithmCategory::Sorting,
+            Self::LinearSearch
+            | Self::BinarySearch
+            | Self::InterpolationSearch
+            | Self::HashSearch => AlgorithmCategory::Searching,
+            Self::ArrayInsert | Self::ArrayDelete | Self::LinkedListTraverse => {
+                AlgorithmCategory::Linear
+            }
+            Self::StackPushPop | Self::QueueEnqueueDequeue => AlgorithmCategory::StackQueue,
+            Self::Factorial | Self::Fibonacci | Self::TowerOfHanoi => AlgorithmCategory::Recursive,
+            Self::BstInsert
+            | Self::BstSearch
+            | Self::HeapInsert
+            | Self::AvlInsert
+            | Self::BstPreOrder
+            | Self::BstInOrder
+            | Self::BstPostOrder
+            | Self::BstLevelOrder => AlgorithmCategory::Tree,
+            Self::Bfs
+            | Self::Dfs
+            | Self::Dijkstra
+            | Self::TopologicalSort
+            | Self::Kruskal
+            | Self::Prim => AlgorithmCategory::Graph,
+            Self::FibonacciDp | Self::Knapsack | Self::LCS | Self::LIS => AlgorithmCategory::Dp,
         }
     }
 }
 
 pub fn build_initial_items(values: &[i32]) -> Vec<VisualItem> {
-    values.iter().enumerate().map(|(i, &v)| VisualItem::new(i, v)).collect()
+    values
+        .iter()
+        .enumerate()
+        .map(|(i, &v)| VisualItem::new(i, v))
+        .collect()
 }

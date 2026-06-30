@@ -12,6 +12,11 @@ pub fn generate_trace(algorithm: &str, values: &[i32]) -> Result<Vec<TraceStep>,
         AlgorithmId::Factorial => factorial::factorial_trace(values),
         AlgorithmId::Fibonacci => fibonacci::fibonacci_trace(values),
         AlgorithmId::TowerOfHanoi => tower_of_hanoi::tower_of_hanoi_trace(values),
-        _ => return Err(format!("algorithm {} is not a recursive algorithm", algorithm)),
+        _ => {
+            return Err(format!(
+                "algorithm {} is not a recursive algorithm",
+                algorithm
+            ))
+        }
     })
 }

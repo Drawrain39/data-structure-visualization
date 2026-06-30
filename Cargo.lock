@@ -136,6 +136,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "visualizer-cli"
+version = "0.1.0"
+dependencies = [
+ "serde_json",
+ "visualizer-catalog",
+ "visualizer-core",
+]
+
+[[package]]
 name = "visualizer-core"
 version = "0.1.0"
 dependencies = [

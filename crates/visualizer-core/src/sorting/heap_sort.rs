@@ -1,4 +1,4 @@
-use crate::types::{ItemId, StepType, TraceStep, VisualItem, build_initial_items};
+use crate::types::{build_initial_items, ItemId, StepType, TraceStep, VisualItem};
 
 pub fn heap_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut steps = Vec::with_capacity(values.len().max(1) * 4);
@@ -106,7 +106,10 @@ fn heapify(
                 .with_comparing(vec![items[largest].id, items[left].id])
                 .with_sorted(sorted.clone())
                 .with_stats(*comparisons, *swaps, *writes)
-                .with_note(format!("比较 {} 和 {}", items[largest].value, items[left].value)),
+                .with_note(format!(
+                    "比较 {} 和 {}",
+                    items[largest].value, items[left].value
+                )),
         );
         if items[left].value > items[largest].value {
             largest = left;
@@ -121,7 +124,10 @@ fn heapify(
                 .with_comparing(vec![items[largest].id, items[right].id])
                 .with_sorted(sorted.clone())
                 .with_stats(*comparisons, *swaps, *writes)
-                .with_note(format!("比较 {} 和 {}", items[largest].value, items[right].value)),
+                .with_note(format!(
+                    "比较 {} 和 {}",
+                    items[largest].value, items[right].value
+                )),
         );
         if items[right].value > items[largest].value {
             largest = right;
@@ -136,7 +142,10 @@ fn heapify(
                 .with_swapping(vec![items[root].id, items[largest].id])
                 .with_sorted(sorted.clone())
                 .with_stats(*comparisons, *swaps, *writes)
-                .with_note(format!("下沉：交换 {} 和 {}", items[root].value, items[largest].value)),
+                .with_note(format!(
+                    "下沉：交换 {} 和 {}",
+                    items[root].value, items[largest].value
+                )),
         );
         items.swap(root, largest);
         *swaps += 1;
@@ -162,7 +171,13 @@ mod tests {
     use crate::types::VisualItem;
 
     fn final_values(steps: &[TraceStep]) -> Vec<i32> {
-        steps.last().unwrap().items.iter().map(|it| it.value).collect()
+        steps
+            .last()
+            .unwrap()
+            .items
+            .iter()
+            .map(|it| it.value)
+            .collect()
     }
 
     fn is_sorted(values: &[VisualItem]) -> bool {

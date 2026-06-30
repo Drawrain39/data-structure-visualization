@@ -1,0 +1,9 @@
+[package]
+name = "visualizer-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+visualizer-core = { path = "../visualizer-core" }
+visualizer-catalog = { path = "../visualizer-catalog" }
+serde_json = { workspace = true }

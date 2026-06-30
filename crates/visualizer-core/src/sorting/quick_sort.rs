@@ -1,4 +1,4 @@
-use crate::types::{ItemId, StepType, TraceStep, VisualItem, build_initial_items};
+use crate::types::{build_initial_items, ItemId, StepType, TraceStep, VisualItem};
 
 pub fn quick_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut steps = Vec::with_capacity(values.len().max(1) * 4);
@@ -57,18 +57,18 @@ fn quick_sort_recursive(
         sorted.push(items[p].id);
 
         if p > 0 {
-            quick_sort_recursive(
-                items,
-                low,
-                p - 1,
-                steps,
-                comparisons,
-                swaps,
-                writes,
-                sorted,
-            );
+            quick_sort_recursive(items, low, p - 1, steps, comparisons, swaps, writes, sorted);
         }
-        quick_sort_recursive(items, p + 1, high, steps, comparisons, swaps, writes, sorted);
+        quick_sort_recursive(
+            items,
+            p + 1,
+            high,
+            steps,
+            comparisons,
+            swaps,
+            writes,
+            sorted,
+        );
     } else if low == high {
         sorted.push(items[low].id);
     }
@@ -97,7 +97,10 @@ fn partition(
                 .with_pivot(pivot_id)
                 .with_sorted(sorted.clone())
                 .with_stats(*comparisons, *swaps, *writes)
-                .with_note(format!("比较 {} 和枢轴 {}", items[j].value, items[pivot_idx].value)),
+                .with_note(format!(
+                    "比较 {} 和枢轴 {}",
+                    items[j].value, items[pivot_idx].value
+                )),
         );
 
         if items[j].value <= items[pivot_idx].value {
@@ -143,7 +146,13 @@ mod tests {
     use crate::types::VisualItem;
 
     fn final_values(steps: &[TraceStep]) -> Vec<i32> {
-        steps.last().unwrap().items.iter().map(|it| it.value).collect()
+        steps
+            .last()
+            .unwrap()
+            .items
+            .iter()
+            .map(|it| it.value)
+            .collect()
     }
 
     fn is_sorted(values: &[VisualItem]) -> bool {

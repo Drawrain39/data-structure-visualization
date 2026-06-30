@@ -1,4 +1,4 @@
-use crate::types::{ItemId, StepType, TraceStep, build_initial_items};
+use crate::types::{build_initial_items, ItemId, StepType, TraceStep};
 
 pub fn selection_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut steps = Vec::with_capacity(values.len().max(1) * 3);
@@ -43,7 +43,10 @@ pub fn selection_sort_trace(values: &[i32]) -> Vec<TraceStep> {
                     .with_min(items[min_idx].id)
                     .with_sorted(sorted.clone())
                     .with_stats(comparisons, swaps, writes)
-                    .with_note(format!("比较 {} 与 {}", items[min_idx].value, items[j].value)),
+                    .with_note(format!(
+                        "比较 {} 与 {}",
+                        items[min_idx].value, items[j].value
+                    )),
             );
 
             if items[j].value < items[min_idx].value {
@@ -93,7 +96,13 @@ mod tests {
     use crate::types::VisualItem;
 
     fn final_values(steps: &[TraceStep]) -> Vec<i32> {
-        steps.last().unwrap().items.iter().map(|it| it.value).collect()
+        steps
+            .last()
+            .unwrap()
+            .items
+            .iter()
+            .map(|it| it.value)
+            .collect()
     }
 
     fn is_sorted(values: &[VisualItem]) -> bool {
