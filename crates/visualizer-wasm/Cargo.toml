@@ -8,6 +8,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 visualizer-core = { path = "../visualizer-core" }
+visualizer-catalog = { path = "../visualizer-catalog" }
 wasm-bindgen = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

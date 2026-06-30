@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/visualizer-core", "crates/visualizer-wasm"]
+members = ["crates/visualizer-core", "crates/visualizer-wasm", "crates/visualizer-catalog"]
 
 [workspace.dependencies]
 serde = { version = "1.0", features = ["derive"] }
