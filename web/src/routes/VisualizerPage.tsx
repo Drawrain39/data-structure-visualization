@@ -36,30 +36,48 @@ const defaultValues: Record<AlgorithmKey, number[]> = {
   'dfs': [1, 2, 3, 4, 5, 6],
 };
 
+function parseValues(raw: string): number[] {
+  return raw
+    .split(/[,，\s]+/)
+    .map((s) => parseInt(s.trim(), 10))
+    .filter((n) => !Number.isNaN(n))
+    .slice(0, 30);
+}
+
 export default function VisualizerPage() {
-  const { ready, error, generateTrace } = useWasm();
+  const { ready, error: wasmError, generateTrace } = useWasm();
   const [algorithm, setAlgorithm] = useState<AlgorithmKey>('quick-sort');
   const [values, setValues] = useState<number[]>(defaultValues['quick-sort']);
+  const [inputText, setInputText] = useState(values.join(', '));
   const [steps, setSteps] = useState<TraceStep[]>([]);
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1.5);
   const [language, setLanguage] = useState<Language>('rust');
   const [loading, setLoading] = useState(false);
+  const [traceError, setTraceError] = useState<string | null>(null);
   const playRef = useRef(isPlaying);
   playRef.current = isPlaying;
 
   const step = steps[current] ?? null;
 
+  // Keep inputText in sync when values actually change from outside (algorithm change / randomize)
+  useEffect(() => {
+    setInputText(values.join(', '));
+  }, [values]);
+
   const loadTrace = useCallback(async () => {
     if (!ready) return;
     setLoading(true);
+    setTraceError(null);
     setIsPlaying(false);
     setCurrent(0);
     try {
       const trace = await generateTrace(algorithm, values);
       setSteps(trace);
     } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      setTraceError(message);
       // eslint-disable-next-line no-console
       console.error(e);
     } finally {
@@ -67,13 +85,10 @@ export default function VisualizerPage() {
     }
   }, [ready, algorithm, values, generateTrace]);
 
-  useEffect(() => {
-    setValues(defaultValues[algorithm]);
-  }, [algorithm]);
-
+  // Generate trace only when ready, algorithm, or values really change.
   useEffect(() => {
     loadTrace();
-  }, [loadTrace]);
+  }, [algorithm, values, ready]);
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -100,6 +115,15 @@ export default function VisualizerPage() {
     return () => cancelAnimationFrame(raf);
   }, [isPlaying, steps.length, speed]);
 
+  const handleAlgorithmChange = (nextAlgorithm: AlgorithmKey) => {
+    setAlgorithm(nextAlgorithm);
+    const nextValues = defaultValues[nextAlgorithm];
+    setValues(nextValues);
+    setInputText(nextValues.join(', '));
+    setCurrent(0);
+    setIsPlaying(false);
+  };
+
   const handlePlay = () => {
     if (current >= steps.length - 1) {
       setCurrent(0);
@@ -120,16 +144,22 @@ export default function VisualizerPage() {
   const handleRandomize = () => {
     const next = Array.from({ length: 10 }, () => Math.floor(Math.random() * 90) + 10);
     setValues(next);
+    setCurrent(0);
+    setIsPlaying(false);
   };
 
-  const handleCustomInput = (raw: string) => {
-    const parsed = raw
-      .split(/[,，\s]+/)
-      .map((s) => parseInt(s.trim(), 10))
-      .filter((n) => !Number.isNaN(n))
-      .slice(0, 30);
+  const applyInput = () => {
+    const parsed = parseValues(inputText);
     if (parsed.length > 0) {
       setValues(parsed);
+      setCurrent(0);
+      setIsPlaying(false);
+    }
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      applyInput();
     }
   };
 
@@ -141,17 +171,26 @@ export default function VisualizerPage() {
           <p className="text-sm text-slate-400">排序核心运行在 Rust / WebAssembly 中</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4">
-          <AlgorithmSelect value={algorithm} onChange={setAlgorithm} />
+        <div className="flex flex-wrap items-center gap-3">
+          <AlgorithmSelect value={algorithm} onChange={handleAlgorithmChange} />
           <input
             type="text"
-            key={algorithm}
-            defaultValue={values.join(', ')}
-            onBlur={(e) => handleCustomInput(e.target.value)}
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            onBlur={applyInput}
+            onKeyDown={handleInputKeyDown}
             placeholder="输入数字，逗号分隔"
             className="w-48 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-accent"
           />
           <button
+            type="button"
+            onClick={applyInput}
+            className="rounded-lg bg-slate-800 px-3 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700"
+          >
+            应用数组
+          </button>
+          <button
+            type="button"
             onClick={handleRandomize}
             className="rounded-lg bg-slate-800 px-3 py-2 text-sm font-medium text-slate-200 hover:bg-slate-700"
           >
@@ -165,9 +204,9 @@ export default function VisualizerPage() {
           正在加载 WebAssembly 模块...
         </div>
       )}
-      {error && (
+      {(wasmError || traceError) && (
         <div className="mb-4 rounded-xl border border-red-900/40 bg-red-950/30 p-4 text-sm text-red-200">
-          WASM 加载失败：{error}
+          {wasmError || traceError}
         </div>
       )}
 
