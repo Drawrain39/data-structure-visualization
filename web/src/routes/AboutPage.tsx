@@ -5,12 +5,12 @@ export default function AboutPage() {
         <h1 className="text-2xl font-bold text-slate-50">关于</h1>
         <p className="mt-4 leading-relaxed text-slate-300">
           数据结构可视化是一个用于学习和展示数据结构与算法运行过程的交互式工具。
-          项目采用 Rust Core + WebAssembly + React UI 的架构，所有排序算法核心由
+          项目采用 Rust Core + WebAssembly + React UI 的架构，所有算法核心由
           Rust 实现并通过 WebAssembly 暴露给前端，前端只负责展示与交互。
         </p>
         <p className="mt-4 leading-relaxed text-slate-300">
-          当前版本为纯前端实现，未来计划部署到 Cloudflare Pages，并通过
-          ds.drawrain.me 访问。
+          当前版本覆盖排序、查找、线性表、栈与队列、递归、树、图等多个主题，
+          未来会持续补充更多算法与数据结构的可视化。
         </p>
         <div className="mt-6 space-y-2 text-sm text-slate-400">
           <p><strong className="text-slate-200">技术栈：</strong> Rust, wasm-bindgen, WebAssembly, React, TypeScript, Vite, Framer Motion, Tailwind CSS</p>

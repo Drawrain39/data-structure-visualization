@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
+import { algorithmMetaMap, type AlgorithmKey } from '../../data/algorithmMeta';
+import { getCodeSample, type Language } from '../../data/codeSamples';
 import type { TraceStep } from '../../types';
-import { getCodeSample, getLineNumbers, type Language } from '../../data/codeSamples';
 
 interface Props {
-  algorithm: string;
+  algorithm: AlgorithmKey;
   language: Language;
   step: TraceStep | null;
   onLanguageChange: (lang: Language) => void;
@@ -16,12 +16,13 @@ const languages: { key: Language; label: string }[] = [
 ];
 
 export default function CodePanel({ algorithm, language, step, onLanguageChange }: Props) {
-  const sample = useMemo(() => getCodeSample(algorithm), [algorithm]);
+  const sample = getCodeSample(algorithm);
   const current = sample?.samples[language];
-  const activeLines = useMemo(() => {
+
+  const activeLines = (() => {
     if (!sample || !step) return new Set<number>();
-    return new Set(getLineNumbers(sample, step.line_key));
-  }, [sample, step]);
+    return new Set(sample.lineMap[step.line_key] ?? []);
+  })();
 
   return (
     <div className="flex h-full flex-col rounded-2xl border border-slate-800 bg-slate-900/80 shadow-2xl overflow-hidden">
@@ -31,6 +32,7 @@ export default function CodePanel({ algorithm, language, step, onLanguageChange 
           {languages.map((lang) => (
             <button
               key={lang.key}
+              type="button"
               onClick={() => onLanguageChange(lang.key)}
               className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
                 language === lang.key
@@ -63,7 +65,7 @@ export default function CodePanel({ algorithm, language, step, onLanguageChange 
             })}
           </pre>
         ) : (
-          <div className="text-slate-500">暂无代码</div>
+          <div className="text-slate-500">暂无 {algorithmMetaMap[algorithm].name} 的代码示例</div>
         )}
       </div>
     </div>

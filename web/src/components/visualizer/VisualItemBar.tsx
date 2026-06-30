@@ -6,9 +6,10 @@ interface Props {
   maxValue: number;
   item: VisualItem;
   index: number;
+  total: number;
 }
 
-function getItemState(id: string, step: TraceStep | null) {
+function getItemState(id: number, step: TraceStep | null) {
   if (!step) return { isSorted: false, isComparing: false, isSwapping: false, isActive: false, isPivot: false };
   return {
     isSorted: step.sorted.includes(id),
@@ -26,29 +27,28 @@ function barColor(state: ReturnType<typeof getItemState>) {
   if (state.isSwapping) return '#ef4444';
   if (state.isComparing) return '#f59e0b';
   if (state.isPivot) return '#a855f7';
-  if (state.isMin) return '#38bdf8';
-  if (state.isActive) return '#38bdf8';
+  if (state.isMin || state.isActive) return '#38bdf8';
   return '#64748b';
 }
 
-export default function VisualItemBar({ item, step, maxValue, index }: Props) {
+export default function VisualItemBar({ item, step, maxValue, index, total }: Props) {
   const state = getItemState(item.id, step);
   const heightPercent = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
-  const widthPercent = 100 / (step?.items.length || 1);
+  const widthPercent = 100 / total;
 
   return (
     <motion.div
       layout
-      layoutId={item.id}
+      layoutId={`bar-${item.id}`}
       initial={false}
       animate={{
         y: state.isComparing ? -12 : 0,
         scale: state.isSwapping ? 1.08 : state.isPivot ? 1.05 : 1,
       }}
       transition={{
-        layout: { type: 'spring', stiffness: 260, damping: 26 },
-        y: { duration: 0.25 },
-        scale: { duration: 0.2 },
+        layout: { type: 'spring', stiffness: 320, damping: 28 },
+        y: { duration: 0.18 },
+        scale: { duration: 0.15 },
       }}
       className={`absolute bottom-0 flex flex-col items-center justify-end rounded-t-md bar-shadow ${
         state.isPivot ? 'pivot-ring' : ''

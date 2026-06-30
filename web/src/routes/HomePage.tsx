@@ -6,7 +6,7 @@ const features = [
   {
     icon: Code2,
     title: 'Rust 核心',
-    desc: '排序算法由 Rust 实现，编译为 WebAssembly 运行，保证性能与正确性。',
+    desc: '算法核心由 Rust 实现，编译为 WebAssembly 运行，保证性能与正确性。',
   },
   {
     icon: BarChart3,
@@ -20,8 +20,8 @@ const features = [
   },
   {
     icon: Route,
-    title: '学习路线',
-    desc: '从基础排序到高级数据结构，规划清晰的学习路径。',
+    title: '体系化内容',
+    desc: '覆盖排序、查找、线性表、栈队列、递归、树、图等数据结构与算法。',
   },
 ];
 

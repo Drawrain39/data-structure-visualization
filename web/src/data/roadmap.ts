@@ -1,27 +1,46 @@
 export interface RoadmapPhase {
   title: string;
-  items: string[];
+  items: { name: string; status: 'done' | 'doing' | 'planned' }[];
 }
 
 export const roadmap: RoadmapPhase[] = [
   {
-    title: '第一阶段：基础排序',
-    items: ['冒泡排序', '选择排序', '插入排序'],
+    title: '线性表',
+    items: [
+      { name: '数组', status: 'done' },
+      { name: '链表', status: 'done' },
+      { name: '栈', status: 'done' },
+      { name: '队列', status: 'done' },
+    ],
   },
   {
-    title: '第二阶段：高效排序',
-    items: ['快速排序', '归并排序', '堆排序'],
+    title: '排序',
+    items: [
+      { name: '选择 / 冒泡 / 插入', status: 'done' },
+      { name: '归并 / 快速 / 堆', status: 'done' },
+    ],
   },
   {
-    title: '第三阶段：线性排序',
-    items: ['计数排序', '基数排序', '桶排序'],
+    title: '查找',
+    items: [
+      { name: '顺序查找', status: 'done' },
+      { name: '二分查找', status: 'done' },
+      { name: '哈希表', status: 'planned' },
+    ],
   },
   {
-    title: '第四阶段：基础数据结构',
-    items: ['数组 / 链表', '栈 / 队列', '哈希表'],
+    title: '递归',
+    items: [
+      { name: '阶乘 / 斐波那契', status: 'done' },
+      { name: '汉诺塔', status: 'done' },
+    ],
   },
   {
-    title: '第五阶段：树与图',
-    items: ['二叉搜索树', '堆', '图遍历（BFS / DFS）'],
+    title: '树与图',
+    items: [
+      { name: '二叉搜索树', status: 'done' },
+      { name: '堆', status: 'done' },
+      { name: 'BFS / DFS', status: 'done' },
+    ],
   },
 ];

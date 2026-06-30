@@ -1,7 +1,7 @@
-use crate::types::{StepType, TraceStep, build_initial_items};
+use crate::types::{ItemId, StepType, TraceStep, build_initial_items};
 
 pub fn selection_sort_trace(values: &[i32]) -> Vec<TraceStep> {
-    let mut steps: Vec<TraceStep> = Vec::new();
+    let mut steps = Vec::with_capacity(values.len().max(1) * 3);
     let mut items = build_initial_items(values);
     let n = items.len();
 
@@ -14,45 +14,36 @@ pub fn selection_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut comparisons = 0usize;
     let mut swaps = 0usize;
     let mut writes = 0usize;
-    let mut sorted_ids: Vec<String> = Vec::new();
+    let mut sorted: Vec<ItemId> = Vec::with_capacity(n);
 
     for i in 0..n {
         if i > 0 {
-            sorted_ids.push(items[i - 1].id.clone());
-            steps.push(
-                TraceStep::new(StepType::Sorted, "mark-sorted")
-                    .with_items(items.clone())
-                    .with_sorted(sorted_ids.clone())
-                    .with_stats(comparisons, swaps, writes)
-                    .with_note(format!("位置 {} 已排序", i - 1)),
-            );
-        }
-
-        if i == n {
-            break;
+            sorted.push(items[i - 1].id);
         }
 
         let mut min_idx = i;
-        steps.push(
-            TraceStep::new(StepType::Select, "select-min")
-                .with_items(items.clone())
-                .with_active(vec![items[i].id.clone()])
-                .with_min(items[min_idx].id.clone())
-                .with_sorted(sorted_ids.clone())
-                .with_stats(comparisons, swaps, writes)
-                .with_note(format!("假设位置 {} 为当前最小值", i)),
-        );
+        if i + 1 < n {
+            steps.push(
+                TraceStep::new(StepType::Select, "select-min")
+                    .with_items(items.clone())
+                    .with_active(vec![items[i].id])
+                    .with_min(items[min_idx].id)
+                    .with_sorted(sorted.clone())
+                    .with_stats(comparisons, swaps, writes)
+                    .with_note(format!("假设位置 {} 为当前最小值", i)),
+            );
+        }
 
         for j in (i + 1)..n {
             comparisons += 1;
             steps.push(
                 TraceStep::new(StepType::Compare, "compare")
                     .with_items(items.clone())
-                    .with_comparing(vec![items[min_idx].id.clone(), items[j].id.clone()])
-                    .with_min(items[min_idx].id.clone())
-                    .with_sorted(sorted_ids.clone())
+                    .with_comparing(vec![items[min_idx].id, items[j].id])
+                    .with_min(items[min_idx].id)
+                    .with_sorted(sorted.clone())
                     .with_stats(comparisons, swaps, writes)
-                    .with_note(format!("比较当前最小值 {} 与 {}", items[min_idx].value, items[j].value)),
+                    .with_note(format!("比较 {} 与 {}", items[min_idx].value, items[j].value)),
             );
 
             if items[j].value < items[min_idx].value {
@@ -60,9 +51,9 @@ pub fn selection_sort_trace(values: &[i32]) -> Vec<TraceStep> {
                 steps.push(
                     TraceStep::new(StepType::Select, "update-min")
                         .with_items(items.clone())
-                        .with_active(vec![items[min_idx].id.clone()])
-                        .with_min(items[min_idx].id.clone())
-                        .with_sorted(sorted_ids.clone())
+                        .with_active(vec![items[min_idx].id])
+                        .with_min(items[min_idx].id)
+                        .with_sorted(sorted.clone())
                         .with_stats(comparisons, swaps, writes)
                         .with_note(format!("发现新的最小值 {}", items[min_idx].value)),
                 );
@@ -73,8 +64,8 @@ pub fn selection_sort_trace(values: &[i32]) -> Vec<TraceStep> {
             steps.push(
                 TraceStep::new(StepType::Swap, "swap")
                     .with_items(items.clone())
-                    .with_swapping(vec![items[i].id.clone(), items[min_idx].id.clone()])
-                    .with_sorted(sorted_ids.clone())
+                    .with_swapping(vec![items[i].id, items[min_idx].id])
+                    .with_sorted(sorted.clone())
                     .with_stats(comparisons, swaps, writes)
                     .with_note(format!("交换位置 {} 和 {}", i, min_idx)),
             );
@@ -84,12 +75,11 @@ pub fn selection_sort_trace(values: &[i32]) -> Vec<TraceStep> {
         }
     }
 
-    // Mark all items sorted in the final state.
-    sorted_ids = items.iter().map(|it| it.id.clone()).collect();
+    sorted = items.iter().map(|it| it.id).collect();
     steps.push(
         TraceStep::new(StepType::Done, "done")
-            .with_items(items.clone())
-            .with_sorted(sorted_ids)
+            .with_items(items)
+            .with_sorted(sorted)
             .with_stats(comparisons, swaps, writes)
             .with_note("选择排序完成"),
     );

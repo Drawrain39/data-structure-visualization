@@ -1,5 +1,5 @@
 export interface VisualItem {
-  id: string;
+  id: number;
   value: number;
 }
 
@@ -13,22 +13,29 @@ export type StepType =
   | 'Partition'
   | 'Merge'
   | 'Sorted'
-  | 'Done';
+  | 'Done'
+  | 'Highlight'
+  | 'Visit'
+  | 'Push'
+  | 'Pop'
+  | 'Enqueue'
+  | 'Dequeue';
 
 export interface TraceStep {
   step_type: StepType;
   line_key: string;
   items: VisualItem[];
-  active: string[];
-  comparing: string[];
-  swapping: string[];
-  sorted: string[];
-  pivot_id: string | null;
-  min_id: string | null;
-  boundary_id: string | null;
+  active: number[];
+  comparing: number[];
+  swapping: number[];
+  sorted: number[];
+  pivot_id: number | null;
+  min_id: number | null;
+  boundary_id: number | null;
   range: [number, number] | null;
   comparisons: number;
   swaps: number;
   writes: number;
   note: string;
+  extra: Record<string, unknown>;
 }

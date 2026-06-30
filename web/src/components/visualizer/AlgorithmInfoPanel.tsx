@@ -19,11 +19,11 @@ export default function AlgorithmInfoPanel({ algorithm }: Props) {
 
       <div className="grid grid-cols-2 gap-4 text-sm">
         <InfoRow label="时间复杂度" value={meta.complexity.time} />
-        <InfoRow label="最好情况" value={meta.complexity.best} />
-        <InfoRow label="平均情况" value={meta.complexity.average} />
-        <InfoRow label="最坏情况" value={meta.complexity.worst} />
+        {meta.complexity.best && <InfoRow label="最好" value={meta.complexity.best} />}
+        {meta.complexity.average && <InfoRow label="平均" value={meta.complexity.average} />}
+        {meta.complexity.worst && <InfoRow label="最坏" value={meta.complexity.worst} />}
         <InfoRow label="空间复杂度" value={meta.complexity.space} />
-        <InfoRow label="稳定性" value={meta.stable} />
+        {meta.stable && <InfoRow label="稳定性" value={meta.stable} />}
       </div>
 
       <div className="mt-4">

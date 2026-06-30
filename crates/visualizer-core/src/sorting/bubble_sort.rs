@@ -1,7 +1,7 @@
-use crate::types::{StepType, TraceStep, build_initial_items};
+use crate::types::{ItemId, StepType, TraceStep, build_initial_items};
 
 pub fn bubble_sort_trace(values: &[i32]) -> Vec<TraceStep> {
-    let mut steps: Vec<TraceStep> = Vec::new();
+    let mut steps = Vec::with_capacity(values.len().max(1) * 3);
     let mut items = build_initial_items(values);
     let n = items.len();
 
@@ -14,18 +14,18 @@ pub fn bubble_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut comparisons = 0usize;
     let mut swaps = 0usize;
     let mut writes = 0usize;
-    let mut sorted_ids: Vec<String> = Vec::new();
+    let mut sorted: Vec<ItemId> = Vec::with_capacity(n);
 
     for i in 0..n {
         let mut swapped = false;
 
-        for j in 0..(n - i - 1) {
+        for j in 0..(n.saturating_sub(i + 1)) {
             comparisons += 1;
             steps.push(
                 TraceStep::new(StepType::Compare, "compare")
                     .with_items(items.clone())
-                    .with_comparing(vec![items[j].id.clone(), items[j + 1].id.clone()])
-                    .with_sorted(sorted_ids.clone())
+                    .with_comparing(vec![items[j].id, items[j + 1].id])
+                    .with_sorted(sorted.clone())
                     .with_stats(comparisons, swaps, writes)
                     .with_note(format!("比较 {} 和 {}", items[j].value, items[j + 1].value)),
             );
@@ -34,8 +34,8 @@ pub fn bubble_sort_trace(values: &[i32]) -> Vec<TraceStep> {
                 steps.push(
                     TraceStep::new(StepType::Swap, "swap")
                         .with_items(items.clone())
-                        .with_swapping(vec![items[j].id.clone(), items[j + 1].id.clone()])
-                        .with_sorted(sorted_ids.clone())
+                        .with_swapping(vec![items[j].id, items[j + 1].id])
+                        .with_sorted(sorted.clone())
                         .with_stats(comparisons, swaps, writes)
                         .with_note(format!("交换 {} 和 {}", items[j].value, items[j + 1].value)),
                 );
@@ -43,46 +43,23 @@ pub fn bubble_sort_trace(values: &[i32]) -> Vec<TraceStep> {
                 swaps += 1;
                 writes += 2;
                 swapped = true;
-
-                steps.push(
-                    TraceStep::new(StepType::Select, "after-swap")
-                        .with_items(items.clone())
-                        .with_sorted(sorted_ids.clone())
-                        .with_stats(comparisons, swaps, writes)
-                        .with_note("交换完成"),
-                );
             }
         }
 
         if n >= i + 1 {
-            sorted_ids.push(items[n - i - 1].id.clone());
-            steps.push(
-                TraceStep::new(StepType::Sorted, "mark-sorted")
-                    .with_items(items.clone())
-                    .with_sorted(sorted_ids.clone())
-                    .with_stats(comparisons, swaps, writes)
-                    .with_note(format!("位置 {} 已就位", n - i - 1)),
-            );
+            sorted.push(items[n - i - 1].id);
         }
 
         if !swapped {
-            steps.push(
-                TraceStep::new(StepType::Select, "early-exit")
-                    .with_items(items.clone())
-                    .with_sorted(sorted_ids.clone())
-                    .with_stats(comparisons, swaps, writes)
-                    .with_note("本轮无交换，提前结束"),
-            );
             break;
         }
     }
 
-    // Ensure every id is marked sorted in final state.
-    sorted_ids = items.iter().map(|it| it.id.clone()).collect();
+    sorted = items.iter().map(|it| it.id).collect();
     steps.push(
         TraceStep::new(StepType::Done, "done")
-            .with_items(items.clone())
-            .with_sorted(sorted_ids)
+            .with_items(items)
+            .with_sorted(sorted)
             .with_stats(comparisons, swaps, writes)
             .with_note("冒泡排序完成"),
     );

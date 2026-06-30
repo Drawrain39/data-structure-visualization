@@ -65,7 +65,7 @@ export default function ControlsPanel({
             <SkipForward className="h-5 w-5" />
           </ControlButton>
 
-          <ControlButton onClick={onReset} title="重置">
+          <ControlButton onClick={onReset} title="重置" type="button">
             <RotateCcw className="h-5 w-5" />
           </ControlButton>
         </div>
@@ -73,6 +73,7 @@ export default function ControlsPanel({
         <div className="flex items-center gap-3">
           <span className="text-sm text-slate-400">速度</span>
           <input
+            id="speed"
             type="range"
             min={0.2}
             max={3}
@@ -80,10 +81,11 @@ export default function ControlsPanel({
             value={speed}
             onChange={(e) => onSpeedChange(parseFloat(e.target.value))}
             className="w-32 accent-accent"
+            aria-label="播放速度"
           />
-          <span className="w-12 text-right text-sm tabular-nums text-slate-300">
+          <label htmlFor="speed" className="w-12 text-right text-sm tabular-nums text-slate-300">
             {speed.toFixed(1)}x
-          </span>
+          </label>
         </div>
       </div>
     </div>
@@ -96,6 +98,7 @@ interface ButtonProps {
   disabled?: boolean;
   variant?: 'default' | 'primary';
   title?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 function ControlButton({
@@ -104,6 +107,7 @@ function ControlButton({
   disabled,
   variant = 'default',
   title,
+  type = 'button',
 }: ButtonProps) {
   const base =
     'inline-flex h-10 w-10 items-center justify-center rounded-full transition-all';
@@ -115,6 +119,7 @@ function ControlButton({
 
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       title={title}

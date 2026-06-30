@@ -1,7 +1,7 @@
-use crate::types::{StepType, TraceStep, build_initial_items};
+use crate::types::{ItemId, StepType, TraceStep, build_initial_items};
 
 pub fn insertion_sort_trace(values: &[i32]) -> Vec<TraceStep> {
-    let mut steps: Vec<TraceStep> = Vec::new();
+    let mut steps = Vec::with_capacity(values.len().max(1) * 3);
     let mut items = build_initial_items(values);
     let n = items.len();
 
@@ -14,29 +14,14 @@ pub fn insertion_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut comparisons = 0usize;
     let mut swaps = 0usize;
     let mut writes = 0usize;
-    let mut sorted_ids: Vec<String> = Vec::new();
+    let mut sorted: Vec<ItemId> = Vec::with_capacity(n);
 
     if n > 0 {
-        sorted_ids.push(items[0].id.clone());
-        steps.push(
-            TraceStep::new(StepType::Sorted, "init-sorted")
-                .with_items(items.clone())
-                .with_sorted(sorted_ids.clone())
-                .with_stats(comparisons, swaps, writes)
-                .with_note("第一个元素天然有序"),
-        );
+        sorted.push(items[0].id);
     }
 
     for i in 1..n {
         let key = items[i].clone();
-        steps.push(
-            TraceStep::new(StepType::Select, "select-key")
-                .with_items(items.clone())
-                .with_active(vec![key.id.clone()])
-                .with_sorted(sorted_ids.clone())
-                .with_stats(comparisons, swaps, writes)
-                .with_note(format!("选择当前元素 {} 作为 key", key.value)),
-        );
 
         let mut j = i;
         while j > 0 {
@@ -44,8 +29,8 @@ pub fn insertion_sort_trace(values: &[i32]) -> Vec<TraceStep> {
             steps.push(
                 TraceStep::new(StepType::Compare, "compare")
                     .with_items(items.clone())
-                    .with_comparing(vec![items[j - 1].id.clone(), key.id.clone()])
-                    .with_sorted(sorted_ids.clone())
+                    .with_comparing(vec![items[j - 1].id, key.id])
+                    .with_sorted(sorted.clone())
                     .with_stats(comparisons, swaps, writes)
                     .with_note(format!("比较 {} 和 key {}", items[j - 1].value, key.value)),
             );
@@ -54,8 +39,8 @@ pub fn insertion_sort_trace(values: &[i32]) -> Vec<TraceStep> {
                 steps.push(
                     TraceStep::new(StepType::Overwrite, "shift")
                         .with_items(items.clone())
-                        .with_active(vec![items[j - 1].id.clone()])
-                        .with_sorted(sorted_ids.clone())
+                        .with_active(vec![items[j - 1].id])
+                        .with_sorted(sorted.clone())
                         .with_stats(comparisons, swaps, writes)
                         .with_note(format!("{} 向后移动", items[j - 1].value)),
                 );
@@ -73,8 +58,8 @@ pub fn insertion_sort_trace(values: &[i32]) -> Vec<TraceStep> {
             steps.push(
                 TraceStep::new(StepType::Overwrite, "insert")
                     .with_items(items.clone())
-                    .with_active(vec![key.id.clone()])
-                    .with_sorted(sorted_ids.clone())
+                    .with_active(vec![key.id])
+                    .with_sorted(sorted.clone())
                     .with_stats(comparisons, swaps, writes)
                     .with_note(format!("将 key {} 插入位置 {}", key.value, j)),
             );
@@ -82,21 +67,14 @@ pub fn insertion_sort_trace(values: &[i32]) -> Vec<TraceStep> {
             writes += 1;
         }
 
-        sorted_ids.push(items[i].id.clone());
-        steps.push(
-            TraceStep::new(StepType::Sorted, "mark-sorted")
-                .with_items(items.clone())
-                .with_sorted(sorted_ids.clone())
-                .with_stats(comparisons, swaps, writes)
-                .with_note(format!("前 {} 个元素已有序", i + 1)),
-        );
+        sorted.push(items[i].id);
     }
 
-    sorted_ids = items.iter().map(|it| it.id.clone()).collect();
+    sorted = items.iter().map(|it| it.id).collect();
     steps.push(
         TraceStep::new(StepType::Done, "done")
-            .with_items(items.clone())
-            .with_sorted(sorted_ids)
+            .with_items(items)
+            .with_sorted(sorted)
             .with_stats(comparisons, swaps, writes)
             .with_note("插入排序完成"),
     );

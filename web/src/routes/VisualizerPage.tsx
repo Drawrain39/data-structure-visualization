@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import VisualizerStage from '../components/visualizer/VisualizerStage';
 import CodePanel from '../components/visualizer/CodePanel';
@@ -12,29 +12,53 @@ import type { AlgorithmKey } from '../data/algorithmMeta';
 import type { TraceStep } from '../types';
 import type { Language } from '../data/codeSamples';
 
-const defaultValues = [64, 25, 12, 22, 11, 89, 34, 55];
+const defaultValues: Record<AlgorithmKey, number[]> = {
+  'selection-sort': [64, 25, 12, 22, 11, 89, 34, 55],
+  'bubble-sort': [64, 25, 12, 22, 11, 89, 34, 55],
+  'insertion-sort': [64, 25, 12, 22, 11, 89, 34, 55],
+  'merge-sort': [38, 27, 43, 3, 9, 82, 10],
+  'quick-sort': [10, 7, 8, 9, 1, 5],
+  'heap-sort': [12, 11, 13, 5, 6, 7],
+  'linear-search': [3, 1, 4, 1, 5, 9, 2, 6],
+  'binary-search': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  'array-insert': [1, 2, 3, 4, 5, 99],
+  'array-delete': [10, 20, 30, 40, 50],
+  'linked-list-traverse': [10, 20, 30, 40, 50],
+  'stack-push-pop': [1, 2, 3, 4, 5],
+  'queue-enqueue-dequeue': [1, 2, 3, 4, 5],
+  'factorial': [5],
+  'fibonacci': [8],
+  'tower-of-hanoi': [3],
+  'bst-insert': [50, 30, 70, 20, 40, 60, 80],
+  'bst-search': [50, 30, 70, 20, 40, 60, 80],
+  'heap-insert': [10, 20, 5, 30, 15],
+  'bfs': [1, 2, 3, 4, 5, 6],
+  'dfs': [1, 2, 3, 4, 5, 6],
+};
 
 export default function VisualizerPage() {
   const { ready, error, generateTrace } = useWasm();
   const [algorithm, setAlgorithm] = useState<AlgorithmKey>('quick-sort');
-  const [values, setValues] = useState<number[]>(defaultValues);
+  const [values, setValues] = useState<number[]>(defaultValues['quick-sort']);
   const [steps, setSteps] = useState<TraceStep[]>([]);
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState(1.2);
+  const [speed, setSpeed] = useState(1.5);
   const [language, setLanguage] = useState<Language>('rust');
   const [loading, setLoading] = useState(false);
+  const playRef = useRef(isPlaying);
+  playRef.current = isPlaying;
 
   const step = steps[current] ?? null;
 
   const loadTrace = useCallback(async () => {
     if (!ready) return;
     setLoading(true);
+    setIsPlaying(false);
+    setCurrent(0);
     try {
       const trace = await generateTrace(algorithm, values);
       setSteps(trace);
-      setCurrent(0);
-      setIsPlaying(false);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
@@ -44,21 +68,36 @@ export default function VisualizerPage() {
   }, [ready, algorithm, values, generateTrace]);
 
   useEffect(() => {
+    setValues(defaultValues[algorithm]);
+  }, [algorithm]);
+
+  useEffect(() => {
     loadTrace();
   }, [loadTrace]);
 
   useEffect(() => {
     if (!isPlaying) return;
-    const interval = setInterval(() => {
-      setCurrent((prev) => {
-        if (prev >= steps.length - 1) {
-          setIsPlaying(false);
-          return prev;
-        }
-        return prev + 1;
-      });
-    }, 800 / speed);
-    return () => clearInterval(interval);
+    let raf = 0;
+    let last = performance.now();
+    const interval = 700 / speed;
+
+    const tick = (now: number) => {
+      if (!playRef.current) return;
+      if (now - last >= interval) {
+        last = now;
+        setCurrent((prev) => {
+          if (prev >= steps.length - 1) {
+            setIsPlaying(false);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [isPlaying, steps.length, speed]);
 
   const handlePlay = () => {
@@ -79,8 +118,7 @@ export default function VisualizerPage() {
   const handleLast = () => setCurrent(steps.length - 1);
 
   const handleRandomize = () => {
-    const count = 10;
-    const next = Array.from({ length: count }, () => Math.floor(Math.random() * 90) + 10);
+    const next = Array.from({ length: 10 }, () => Math.floor(Math.random() * 90) + 10);
     setValues(next);
   };
 
@@ -100,15 +138,14 @@ export default function VisualizerPage() {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-50">算法可视化</h1>
-          <p className="text-sm text-slate-400">
-            排序核心运行在 Rust / WebAssembly 中
-          </p>
+          <p className="text-sm text-slate-400">排序核心运行在 Rust / WebAssembly 中</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
           <AlgorithmSelect value={algorithm} onChange={setAlgorithm} />
           <input
             type="text"
+            key={algorithm}
             defaultValue={values.join(', ')}
             onBlur={(e) => handleCustomInput(e.target.value)}
             placeholder="输入数字，逗号分隔"

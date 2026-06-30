@@ -1,7 +1,7 @@
-use crate::types::{StepType, TraceStep, VisualItem, build_initial_items};
+use crate::types::{ItemId, StepType, TraceStep, VisualItem, build_initial_items};
 
 pub fn merge_sort_trace(values: &[i32]) -> Vec<TraceStep> {
-    let mut steps: Vec<TraceStep> = Vec::new();
+    let mut steps = Vec::with_capacity(values.len().max(1) * 4);
     let mut items = build_initial_items(values);
     let n = items.len();
 
@@ -14,7 +14,7 @@ pub fn merge_sort_trace(values: &[i32]) -> Vec<TraceStep> {
     let mut comparisons = 0usize;
     let mut swaps = 0usize;
     let mut writes = 0usize;
-    let mut sorted_ids: Vec<String> = Vec::new();
+    let mut sorted: Vec<ItemId> = Vec::with_capacity(n);
 
     if n > 0 {
         let mut temp = items.clone();
@@ -27,15 +27,15 @@ pub fn merge_sort_trace(values: &[i32]) -> Vec<TraceStep> {
             &mut comparisons,
             &mut swaps,
             &mut writes,
-            &mut sorted_ids,
+            &mut sorted,
         );
     }
 
-    sorted_ids = items.iter().map(|it| it.id.clone()).collect();
+    sorted = items.iter().map(|it| it.id).collect();
     steps.push(
         TraceStep::new(StepType::Done, "done")
-            .with_items(items.clone())
-            .with_sorted(sorted_ids)
+            .with_items(items)
+            .with_sorted(sorted)
             .with_stats(comparisons, swaps, writes)
             .with_note("归并排序完成"),
     );
@@ -52,29 +52,14 @@ fn merge_sort_recursive(
     comparisons: &mut usize,
     swaps: &mut usize,
     writes: &mut usize,
-    sorted_ids: &mut Vec<String>,
+    sorted: &mut Vec<ItemId>,
 ) {
     if left >= right {
-        sorted_ids.push(items[left].id.clone());
-        steps.push(
-            TraceStep::new(StepType::Sorted, "single-sorted")
-                .with_items(items.clone())
-                .with_sorted(sorted_ids.clone())
-                .with_stats(*comparisons, *swaps, *writes)
-                .with_note(format!("单个元素 {} 已有序", items[left].value)),
-        );
+        sorted.push(items[left].id);
         return;
     }
 
     let mid = left + (right - left) / 2;
-    steps.push(
-        TraceStep::new(StepType::Partition, "split")
-            .with_items(items.clone())
-            .with_range((left, right))
-            .with_sorted(sorted_ids.clone())
-            .with_stats(*comparisons, *swaps, *writes)
-            .with_note(format!("将区间 [{}..{}] 拆分为两半", left, right)),
-    );
 
     merge_sort_recursive(
         items,
@@ -85,7 +70,7 @@ fn merge_sort_recursive(
         comparisons,
         swaps,
         writes,
-        sorted_ids,
+        sorted,
     );
     merge_sort_recursive(
         items,
@@ -96,7 +81,7 @@ fn merge_sort_recursive(
         comparisons,
         swaps,
         writes,
-        sorted_ids,
+        sorted,
     );
 
     merge(
@@ -109,23 +94,14 @@ fn merge_sort_recursive(
         comparisons,
         swaps,
         writes,
-        sorted_ids,
+        sorted,
     );
 
-    // After merge, mark this whole range as sorted-ish.
     for idx in left..=right {
-        if !sorted_ids.contains(&items[idx].id) {
-            sorted_ids.push(items[idx].id.clone());
+        if !sorted.contains(&items[idx].id) {
+            sorted.push(items[idx].id);
         }
     }
-    steps.push(
-        TraceStep::new(StepType::Merge, "merged")
-            .with_items(items.clone())
-            .with_range((left, right))
-            .with_sorted(sorted_ids.clone())
-            .with_stats(*comparisons, *swaps, *writes)
-            .with_note(format!("区间 [{}..{}] 已合并有序", left, right)),
-    );
 }
 
 fn merge(
@@ -138,7 +114,7 @@ fn merge(
     comparisons: &mut usize,
     swaps: &mut usize,
     writes: &mut usize,
-    sorted_ids: &mut Vec<String>,
+    sorted: &mut Vec<ItemId>,
 ) {
     let mut i = left;
     let mut j = mid + 1;
@@ -151,21 +127,20 @@ fn merge(
         steps.push(
             TraceStep::new(StepType::Compare, "compare")
                 .with_items(items.clone())
-                .with_comparing(vec![temp[i].id.clone(), temp[j].id.clone()])
+                .with_comparing(vec![temp[i].id, temp[j].id])
                 .with_range((left, right))
-                .with_sorted(sorted_ids.clone())
+                .with_sorted(sorted.clone())
                 .with_stats(*comparisons, *swaps, *writes)
                 .with_note(format!("比较 {} 和 {}", temp[i].value, temp[j].value)),
         );
 
         if temp[i].value <= temp[j].value {
-            let prev_id = items[k].id.clone();
             steps.push(
                 TraceStep::new(StepType::Overwrite, "write-left")
                     .with_items(items.clone())
-                    .with_active(vec![temp[i].id.clone(), prev_id.clone()])
+                    .with_active(vec![temp[i].id])
                     .with_range((left, right))
-                    .with_sorted(sorted_ids.clone())
+                    .with_sorted(sorted.clone())
                     .with_stats(*comparisons, *swaps, *writes)
                     .with_note(format!("将 {} 写入位置 {}", temp[i].value, k)),
             );
@@ -173,13 +148,12 @@ fn merge(
             *writes += 1;
             i += 1;
         } else {
-            let prev_id = items[k].id.clone();
             steps.push(
                 TraceStep::new(StepType::Overwrite, "write-right")
                     .with_items(items.clone())
-                    .with_active(vec![temp[j].id.clone(), prev_id.clone()])
+                    .with_active(vec![temp[j].id])
                     .with_range((left, right))
-                    .with_sorted(sorted_ids.clone())
+                    .with_sorted(sorted.clone())
                     .with_stats(*comparisons, *swaps, *writes)
                     .with_note(format!("将 {} 写入位置 {}", temp[j].value, k)),
             );
@@ -192,13 +166,12 @@ fn merge(
     }
 
     while i <= mid {
-        let prev_id = items[k].id.clone();
         steps.push(
             TraceStep::new(StepType::Overwrite, "write-left")
                 .with_items(items.clone())
-                .with_active(vec![temp[i].id.clone(), prev_id.clone()])
+                .with_active(vec![temp[i].id])
                 .with_range((left, right))
-                .with_sorted(sorted_ids.clone())
+                .with_sorted(sorted.clone())
                 .with_stats(*comparisons, *swaps, *writes)
                 .with_note(format!("将剩余 {} 写入位置 {}", temp[i].value, k)),
         );
@@ -210,13 +183,12 @@ fn merge(
     }
 
     while j <= right {
-        let prev_id = items[k].id.clone();
         steps.push(
             TraceStep::new(StepType::Overwrite, "write-right")
                 .with_items(items.clone())
-                .with_active(vec![temp[j].id.clone(), prev_id.clone()])
+                .with_active(vec![temp[j].id])
                 .with_range((left, right))
-                .with_sorted(sorted_ids.clone())
+                .with_sorted(sorted.clone())
                 .with_stats(*comparisons, *swaps, *writes)
                 .with_note(format!("将剩余 {} 写入位置 {}", temp[j].value, k)),
         );
@@ -231,6 +203,7 @@ fn merge(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::types::VisualItem;
 
     fn final_values(steps: &[TraceStep]) -> Vec<i32> {
         steps.last().unwrap().items.iter().map(|it| it.value).collect()

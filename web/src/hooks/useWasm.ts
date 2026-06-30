@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { TraceStep } from '../types';
 import init, { generate_trace_json } from '../../public/wasm/visualizer_wasm';
 
 export function useWasm() {
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const generatingRef = useRef(false);
 
   useEffect(() => {
     let mounted = true;
@@ -24,8 +25,14 @@ export function useWasm() {
 
   const generateTrace = async (algorithm: string, values: number[]): Promise<TraceStep[]> => {
     if (!ready) throw new Error('WASM 尚未加载');
-    const json = generate_trace_json(algorithm, JSON.stringify(values));
-    return JSON.parse(json) as TraceStep[];
+    if (generatingRef.current) throw new Error('正在生成 trace，请稍候');
+    generatingRef.current = true;
+    try {
+      const json = generate_trace_json(algorithm, JSON.stringify(values));
+      return JSON.parse(json) as TraceStep[];
+    } finally {
+      generatingRef.current = false;
+    }
   };
 
   return { ready, error, generateTrace };

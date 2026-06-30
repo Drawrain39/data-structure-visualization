@@ -1,11 +1,23 @@
 import { roadmap } from '../data/roadmap';
 
+const statusClass: Record<'done' | 'doing' | 'planned', string> = {
+  done: 'bg-green-500/20 text-green-400',
+  doing: 'bg-accent/20 text-accent',
+  planned: 'bg-slate-800 text-slate-500',
+};
+
+const statusText: Record<'done' | 'doing' | 'planned', string> = {
+  done: '已完成',
+  doing: '进行中',
+  planned: '规划中',
+};
+
 export default function RoadmapPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-10 text-center">
         <h1 className="text-2xl font-bold text-slate-50">学习路线</h1>
-        <p className="mt-2 text-slate-400">从排序算法开始，循序渐进掌握数据结构与算法</p>
+        <p className="mt-2 text-slate-400">从线性表到树与图，循序渐进掌握数据结构与算法</p>
       </div>
 
       <div className="relative space-y-8 pl-6 before:absolute before:left-2 before:top-2 before:h-full before:w-0.5 before:bg-slate-800">
@@ -21,13 +33,16 @@ export default function RoadmapPage() {
                 </span>
                 <h3 className="font-bold text-slate-50">{phase.title}</h3>
               </div>
-              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {phase.items.map((item) => (
                   <li
-                    key={item}
-                    className="rounded-lg bg-slate-950/50 px-3 py-2 text-sm text-slate-300"
+                    key={item.name}
+                    className="flex items-center justify-between rounded-lg bg-slate-950/50 px-3 py-2 text-sm text-slate-300"
                   >
-                    {item}
+                    <span>{item.name}</span>
+                    <span className={`rounded px-1.5 py-0.5 text-xs ${statusClass[item.status]}`}>
+                      {statusText[item.status]}
+                    </span>
                   </li>
                 ))}
               </ul>
