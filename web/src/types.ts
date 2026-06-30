@@ -19,7 +19,9 @@ export type StepType =
   | 'Push'
   | 'Pop'
   | 'Enqueue'
-  | 'Dequeue';
+  | 'Dequeue'
+  | 'Relax'
+  | 'Rotate';
 
 export interface TraceStep {
   step_type: StepType;

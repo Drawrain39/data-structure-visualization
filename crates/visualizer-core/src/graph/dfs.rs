@@ -46,3 +46,22 @@ fn dfs_recursive(
         dfs_recursive(node + 1, items, visited, steps);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let steps = dfs_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_dfs() {
+        let steps = dfs_trace(&[1, 2, 3, 4, 5, 6]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        assert!(steps.iter().any(|s| s.step_type == StepType::Visit));
+    }
+}

@@ -19,8 +19,14 @@ const defaultValues: Record<AlgorithmKey, number[]> = {
   'merge-sort': [38, 27, 43, 3, 9, 82, 10],
   'quick-sort': [10, 7, 8, 9, 1, 5],
   'heap-sort': [12, 11, 13, 5, 6, 7],
+  'shell-sort': [12, 34, 54, 2, 3, 7, 8, 99],
+  'counting-sort': [3, 1, 4, 1, 5, 9, 2, 6],
+  'bucket-sort': [78, 17, 39, 26, 72, 94, 21, 12],
+  'radix-sort': [170, 45, 75, 90, 802, 24, 2, 66],
   'linear-search': [3, 1, 4, 1, 5, 9, 2, 6],
   'binary-search': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  'interpolation-search': [10, 20, 30, 40, 50, 60, 70, 80],
+  'hash-search': [10, 20, 30, 40, 50],
   'array-insert': [1, 2, 3, 4, 5, 99],
   'array-delete': [10, 20, 30, 40, 50],
   'linked-list-traverse': [10, 20, 30, 40, 50],
@@ -32,8 +38,21 @@ const defaultValues: Record<AlgorithmKey, number[]> = {
   'bst-insert': [50, 30, 70, 20, 40, 60, 80],
   'bst-search': [50, 30, 70, 20, 40, 60, 80],
   'heap-insert': [10, 20, 5, 30, 15],
+  'avl-insert': [50, 30, 70, 20, 40, 60, 80],
+  'bst-preorder': [1, 2, 3, 4, 5, 6, 7],
+  'bst-inorder': [1, 2, 3, 4, 5, 6, 7],
+  'bst-postorder': [1, 2, 3, 4, 5, 6, 7],
+  'bst-levelorder': [1, 2, 3, 4, 5, 6, 7],
   'bfs': [1, 2, 3, 4, 5, 6],
   'dfs': [1, 2, 3, 4, 5, 6],
+  'dijkstra': [0, 4, 2, 7, 1, 5],
+  'topological-sort': [1, 2, 3, 4, 5],
+  'kruskal': [4, 8, 1, 3, 7],
+  'prim': [4, 8, 1, 3, 7],
+  'fibonacci-dp': [8],
+  'knapsack': [10, 2, 3, 4, 5],
+  'lcs': [5, 5],
+  'lis': [10, 9, 2, 5, 3, 7, 101, 18],
 };
 
 function parseValues(raw: string): number[] {
@@ -212,7 +231,7 @@ export default function VisualizerPage() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="flex flex-col gap-4 lg:col-span-2">
-          <VisualizerStage step={step} />
+          <VisualizerStage step={step} algorithm={algorithm} />
           <ControlsPanel
             isPlaying={isPlaying}
             canStepForward={current < steps.length - 1}

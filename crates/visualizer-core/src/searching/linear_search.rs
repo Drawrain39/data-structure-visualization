@@ -42,3 +42,30 @@ pub fn linear_search_trace(values: &[i32]) -> Vec<TraceStep> {
 
     steps
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let steps = linear_search_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_found() {
+        let steps = linear_search_trace(&[42, 7, 13, 99]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        let found = steps.iter().any(|s| s.note.contains("找到"));
+        assert!(found);
+    }
+
+    #[test]
+    fn test_not_present() {
+        let steps = linear_search_trace(&[10, 20, 30]);
+        // Searches for values[0]=10, which is present
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+}

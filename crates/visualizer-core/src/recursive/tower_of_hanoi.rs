@@ -48,3 +48,28 @@ fn hanoi(
     );
     hanoi(n - 1, aux, to, from, items, steps);
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_one() {
+        let steps = tower_of_hanoi_trace(&[1]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        assert!(steps.iter().any(|s| s.step_type == StepType::Select));
+    }
+
+    #[test]
+    fn test_three() {
+        let steps = tower_of_hanoi_trace(&[3]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_empty() {
+        let steps = tower_of_hanoi_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+}

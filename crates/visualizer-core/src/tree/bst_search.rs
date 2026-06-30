@@ -5,6 +5,20 @@ pub fn bst_search_trace(values: &[i32]) -> Vec<TraceStep> {
     let items = build_initial_items(values);
     let target = items.first().map(|it| it.value).unwrap_or(0);
 
+    if items.is_empty() {
+        steps.push(
+            TraceStep::new(StepType::Start, "bst-search")
+                .with_extra(serde_json::json!({ "target": target }))
+                .with_note("树为空"),
+        );
+        steps.push(
+            TraceStep::new(StepType::Done, "done")
+                .with_extra(serde_json::json!({ "target": target }))
+                .with_note("查找结束"),
+        );
+        return steps;
+    }
+
     steps.push(
         TraceStep::new(StepType::Start, "bst-search")
             .with_items(items.clone())
@@ -54,4 +68,23 @@ pub fn bst_search_trace(values: &[i32]) -> Vec<TraceStep> {
     );
 
     steps
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let steps = bst_search_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_search() {
+        let steps = bst_search_trace(&[50, 30, 70, 20, 40, 60, 80]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        assert!(steps.iter().any(|s| s.step_type == StepType::Compare));
+    }
 }

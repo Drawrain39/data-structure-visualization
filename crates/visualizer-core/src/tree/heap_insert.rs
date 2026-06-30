@@ -50,3 +50,22 @@ pub fn heap_insert_trace(values: &[i32]) -> Vec<TraceStep> {
 
     steps
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let steps = heap_insert_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_insert() {
+        let steps = heap_insert_trace(&[10, 20, 5, 30, 15]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        assert!(steps.iter().any(|s| s.step_type == StepType::Push));
+    }
+}

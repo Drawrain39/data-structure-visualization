@@ -32,3 +32,27 @@ pub fn factorial_trace(values: &[i32]) -> Vec<TraceStep> {
 
     steps
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_zero() {
+        let steps = factorial_trace(&[0]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_five() {
+        let steps = factorial_trace(&[5]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_empty() {
+        let steps = factorial_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+}

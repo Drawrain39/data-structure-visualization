@@ -7,7 +7,8 @@ export type AlgorithmCategory =
   | 'stack-queue'
   | 'recursive'
   | 'tree'
-  | 'graph';
+  | 'graph'
+  | 'dp';
 
 export type AlgorithmKey =
   // Sorting
@@ -17,9 +18,15 @@ export type AlgorithmKey =
   | 'merge-sort'
   | 'quick-sort'
   | 'heap-sort'
+  | 'shell-sort'
+  | 'counting-sort'
+  | 'bucket-sort'
+  | 'radix-sort'
   // Searching
   | 'linear-search'
   | 'binary-search'
+  | 'interpolation-search'
+  | 'hash-search'
   // Linear
   | 'array-insert'
   | 'array-delete'
@@ -35,9 +42,23 @@ export type AlgorithmKey =
   | 'bst-insert'
   | 'bst-search'
   | 'heap-insert'
+  | 'avl-insert'
+  | 'bst-preorder'
+  | 'bst-inorder'
+  | 'bst-postorder'
+  | 'bst-levelorder'
   // Graph
   | 'bfs'
-  | 'dfs';
+  | 'dfs'
+  | 'dijkstra'
+  | 'topological-sort'
+  | 'kruskal'
+  | 'prim'
+  // DP
+  | 'fibonacci-dp'
+  | 'knapsack'
+  | 'lcs'
+  | 'lis';
 
 export interface AlgorithmMeta {
   key: AlgorithmKey;
@@ -64,6 +85,7 @@ export const categoryLabels: Record<AlgorithmCategory, string> = {
   recursive: '递归',
   tree: '树',
   graph: '图',
+  dp: '动态规划',
 };
 
 export const algorithmMetaMap: Record<AlgorithmKey, AlgorithmMeta> = {
@@ -127,6 +149,16 @@ export const algorithmMetaMap: Record<AlgorithmKey, AlgorithmMeta> = {
     complexity: { time: 'O(n log n)', best: 'O(n log n)', average: 'O(n log n)', worst: 'O(n log n)', space: 'O(1)' },
     stable: '不稳定',
     useCases: ['Top K', '内存受限'],
+  },
+  'shell-sort': {
+    key: 'shell-sort',
+    name: '希尔排序',
+    nameEn: 'Shell Sort',
+    category: 'sorting',
+    description: '改进的插入排序，通过递减增量分组排序逐步逼近有序。',
+    complexity: { time: 'O(n log² n)', best: 'O(n log n)', average: 'O(n log² n)', worst: 'O(n²)', space: 'O(1)' },
+    stable: '不稳定',
+    useCases: ['中等规模', '插入排序的改进替代'],
   },
   // Searching
   'linear-search': {
@@ -269,6 +301,114 @@ export const algorithmMetaMap: Record<AlgorithmKey, AlgorithmMeta> = {
     complexity: { time: 'O(V+E)', space: 'O(V)' },
     useCases: ['拓扑排序', '连通分量'],
   },
+  'counting-sort': {
+    key: 'counting-sort', name: '计数排序', nameEn: 'Counting Sort', category: 'sorting',
+    description: '统计每个值出现的次数，通过前缀和确定位置。',
+    complexity: { time: 'O(n+k)', space: 'O(k)' }, stable: '稳定',
+    useCases: ['整数排序', '值域较小'],
+  },
+  'bucket-sort': {
+    key: 'bucket-sort', name: '桶排序', nameEn: 'Bucket Sort', category: 'sorting',
+    description: '将元素分配到多个桶中，桶内排序后合并。',
+    complexity: { time: 'O(n+k)', space: 'O(n+k)' }, stable: '稳定',
+    useCases: ['均匀分布数据', '外部排序'],
+  },
+  'radix-sort': {
+    key: 'radix-sort', name: '基数排序', nameEn: 'Radix Sort', category: 'sorting',
+    description: '按位排序，从低位到高位依次进行稳定计数排序。',
+    complexity: { time: 'O(d·(n+k))', space: 'O(n+k)' }, stable: '稳定',
+    useCases: ['整数排序', '字符串排序'],
+  },
+  'interpolation-search': {
+    key: 'interpolation-search', name: '插值查找', nameEn: 'Interpolation Search', category: 'searching',
+    description: '根据目标值估算其在有序数组中的位置。',
+    complexity: { time: 'O(log log n)', best: 'O(1)', worst: 'O(n)', space: 'O(1)' },
+    useCases: ['均匀分布有序数据'],
+  },
+  'hash-search': {
+    key: 'hash-search', name: '哈希查找', nameEn: 'Hash Search', category: 'searching',
+    description: '通过哈希函数直接映射到存储位置，O(1) 查询。',
+    complexity: { time: 'O(1)', worst: 'O(n)', space: 'O(n)' },
+    useCases: ['大量数据快速查找', '去重'],
+  },
+  'avl-insert': {
+    key: 'avl-insert', name: 'AVL 插入', nameEn: 'AVL Insert', category: 'tree',
+    description: '插入后通过旋转保持平衡，确保高度差不超过 1。',
+    complexity: { time: 'O(log n)', space: 'O(1)' },
+    useCases: ['频繁增删的有序集合'],
+  },
+  'bst-preorder': {
+    key: 'bst-preorder', name: '二叉树前序遍历', nameEn: 'Pre-order Traversal', category: 'tree',
+    description: '根 → 左 → 右 的顺序访问每个节点。',
+    complexity: { time: 'O(n)', space: 'O(h)' },
+    useCases: ['复制树结构', '前缀表达式'],
+  },
+  'bst-inorder': {
+    key: 'bst-inorder', name: '二叉树中序遍历', nameEn: 'In-order Traversal', category: 'tree',
+    description: '左 → 根 → 右 的顺序，输出递增序列。',
+    complexity: { time: 'O(n)', space: 'O(h)' },
+    useCases: ['BST 有序输出'],
+  },
+  'bst-postorder': {
+    key: 'bst-postorder', name: '二叉树后序遍历', nameEn: 'Post-order Traversal', category: 'tree',
+    description: '左 → 右 → 根 的顺序，用于删除和表达式计算。',
+    complexity: { time: 'O(n)', space: 'O(h)' },
+    useCases: ['释放树', '后缀表达式'],
+  },
+  'bst-levelorder': {
+    key: 'bst-levelorder', name: '二叉树层序遍历', nameEn: 'Level-order Traversal', category: 'tree',
+    description: '逐层访问，使用队列实现（BFS）。',
+    complexity: { time: 'O(n)', space: 'O(w)' },
+    useCases: ['广度优先处理'],
+  },
+  'dijkstra': {
+    key: 'dijkstra', name: 'Dijkstra 最短路径', nameEn: 'Dijkstra', category: 'graph',
+    description: '贪心扩展，逐步确定每个节点的最短距离。',
+    complexity: { time: 'O((V+E)logV)', space: 'O(V)' },
+    useCases: ['路由算法', '地图导航'],
+  },
+  'topological-sort': {
+    key: 'topological-sort', name: '拓扑排序', nameEn: 'Topological Sort', category: 'graph',
+    description: 'Kahn 算法，按入度逐步输出 DAG 的有序序列。',
+    complexity: { time: 'O(V+E)', space: 'O(V)' },
+    useCases: ['任务调度', '依赖解析'],
+  },
+  'kruskal': {
+    key: 'kruskal', name: 'Kruskal 最小生成树', nameEn: 'Kruskal MST', category: 'graph',
+    description: '按边权升序，用并查集逐步加入不构成环的边。',
+    complexity: { time: 'O(E log E)', space: 'O(V)' },
+    useCases: ['网络布线', '聚类'],
+  },
+  'prim': {
+    key: 'prim', name: 'Prim 最小生成树', nameEn: 'Prim MST', category: 'graph',
+    description: '从起点出发，每次都选择连接已选集合的最小边。',
+    complexity: { time: 'O((V+E)logV)', space: 'O(V)' },
+    useCases: ['网络布线', '连通图'],
+  },
+  'fibonacci-dp': {
+    key: 'fibonacci-dp', name: '斐波那契 DP', nameEn: 'Fibonacci DP', category: 'dp',
+    description: '自底向上递推，避免递归重复计算。',
+    complexity: { time: 'O(n)', space: 'O(n)' },
+    useCases: ['DP 入门'],
+  },
+  'knapsack': {
+    key: 'knapsack', name: '0/1 背包', nameEn: 'Knapsack', category: 'dp',
+    description: '选择物品使总价值最大且不超容量。',
+    complexity: { time: 'O(n·W)', space: 'O(n·W)' },
+    useCases: ['资源分配', '投资组合'],
+  },
+  'lcs': {
+    key: 'lcs', name: '最长公共子序列', nameEn: 'LCS', category: 'dp',
+    description: '求两个序列的最长公共子序列长度。',
+    complexity: { time: 'O(m·n)', space: 'O(m·n)' },
+    useCases: ['文本对比', '版本控制'],
+  },
+  'lis': {
+    key: 'lis', name: '最长递增子序列', nameEn: 'LIS', category: 'dp',
+    description: '求数组中最长严格递增子序列的长度。',
+    complexity: { time: 'O(n²)', space: 'O(n)' },
+    useCases: ['序列分析', '套娃问题'],
+  },
 };
 
 export const algorithmKeys: AlgorithmKey[] = Object.keys(
@@ -318,6 +458,10 @@ export function getStepDescription(step: TraceStep): string {
       return '入队';
     case 'Dequeue':
       return '出队';
+    case 'Relax':
+      return '松弛';
+    case 'Rotate':
+      return '旋转';
     default:
       return '';
   }

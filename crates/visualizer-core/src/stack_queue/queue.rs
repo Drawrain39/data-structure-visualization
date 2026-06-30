@@ -43,3 +43,23 @@ pub fn queue_trace(values: &[i32]) -> Vec<TraceStep> {
 
     steps
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let steps = queue_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_enqueue_dequeue() {
+        let steps = queue_trace(&[1, 2, 3, 4, 5]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        assert!(steps.iter().any(|s| s.step_type == StepType::Enqueue));
+        assert!(steps.iter().any(|s| s.step_type == StepType::Dequeue));
+    }
+}

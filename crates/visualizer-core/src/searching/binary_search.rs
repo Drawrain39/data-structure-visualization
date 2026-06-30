@@ -6,6 +6,20 @@ pub fn binary_search_trace(values: &[i32]) -> Vec<TraceStep> {
     items.sort_by_key(|it| it.value);
     let target = items.first().map(|it| it.value).unwrap_or(0);
 
+    if items.is_empty() {
+        steps.push(
+            TraceStep::new(StepType::Start, "binary-search")
+                .with_extra(serde_json::json!({ "target": target }))
+                .with_note("数组为空"),
+        );
+        steps.push(
+            TraceStep::new(StepType::Done, "done")
+                .with_extra(serde_json::json!({ "target": target }))
+                .with_note("二分查找结束"),
+        );
+        return steps;
+    }
+
     steps.push(
         TraceStep::new(StepType::Start, "binary-search")
             .with_items(items.clone())
@@ -60,4 +74,30 @@ pub fn binary_search_trace(values: &[i32]) -> Vec<TraceStep> {
     );
 
     steps
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let steps = binary_search_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_found() {
+        let steps = binary_search_trace(&[1, 3, 5, 7, 9]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        let found = steps.iter().any(|s| s.note.contains("找到"));
+        assert!(found);
+    }
+
+    #[test]
+    fn test_single() {
+        let steps = binary_search_trace(&[42]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
 }

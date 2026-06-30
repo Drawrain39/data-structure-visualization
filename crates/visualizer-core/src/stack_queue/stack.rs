@@ -42,3 +42,23 @@ pub fn stack_trace(values: &[i32]) -> Vec<TraceStep> {
 
     steps
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let steps = stack_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_push_pop() {
+        let steps = stack_trace(&[1, 2, 3, 4, 5]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        assert!(steps.iter().any(|s| s.step_type == StepType::Push));
+        assert!(steps.iter().any(|s| s.step_type == StepType::Pop));
+    }
+}

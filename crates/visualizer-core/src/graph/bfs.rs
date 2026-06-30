@@ -49,3 +49,22 @@ pub fn bfs_trace(values: &[i32]) -> Vec<TraceStep> {
     );
     steps
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_empty() {
+        let steps = bfs_trace(&[]);
+        assert!(!steps.is_empty());
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+    }
+
+    #[test]
+    fn test_bfs() {
+        let steps = bfs_trace(&[1, 2, 3, 4, 5, 6]);
+        assert_eq!(steps.last().unwrap().step_type, StepType::Done);
+        assert!(steps.iter().any(|s| s.step_type == StepType::Visit));
+    }
+}

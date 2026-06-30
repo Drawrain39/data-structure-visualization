@@ -13,12 +13,12 @@ export interface AlgorithmCode {
 }
 
 export const codeSamples: AlgorithmCode[] = [
+  // ===== SORTING =====
   {
     algorithm: 'selection-sort',
     samples: {
       cpp: {
-        language: 'cpp',
-        label: 'C++',
+        language: 'cpp', label: 'C++',
         lines: [
           'void selectionSort(vector<int>& arr) {',
           '  int n = arr.size();',
@@ -37,8 +37,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       python: {
-        language: 'python',
-        label: 'Python',
+        language: 'python', label: 'Python',
         lines: [
           'def selection_sort(arr):',
           '    n = len(arr)',
@@ -52,8 +51,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       rust: {
-        language: 'rust',
-        label: 'Rust',
+        language: 'rust', label: 'Rust',
         lines: [
           'fn selection_sort(arr: &mut [i32]) {',
           '    let n = arr.len();',
@@ -72,21 +70,13 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
     },
-    lineMap: {
-      outer: [3],
-      'select-min': [4],
-      compare: [6],
-      'update-min': [7],
-      swap: [10],
-      done: [13],
-    },
+    lineMap: { outer: [3], 'select-min': [4], compare: [6], 'update-min': [7], swap: [10], done: [13] },
   },
   {
     algorithm: 'bubble-sort',
     samples: {
       cpp: {
-        language: 'cpp',
-        label: 'C++',
+        language: 'cpp', label: 'C++',
         lines: [
           'void bubbleSort(vector<int>& arr) {',
           '  int n = arr.size();',
@@ -101,8 +91,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       python: {
-        language: 'python',
-        label: 'Python',
+        language: 'python', label: 'Python',
         lines: [
           'def bubble_sort(arr):',
           '    n = len(arr)',
@@ -113,8 +102,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       rust: {
-        language: 'rust',
-        label: 'Rust',
+        language: 'rust', label: 'Rust',
         lines: [
           'fn bubble_sort(arr: &mut [i32]) {',
           '    let n = arr.len();',
@@ -129,19 +117,13 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
     },
-    lineMap: {
-      outer: [3],
-      compare: [5],
-      swap: [6],
-      done: [10],
-    },
+    lineMap: { outer: [3], compare: [5], swap: [6], done: [10] },
   },
   {
     algorithm: 'insertion-sort',
     samples: {
       cpp: {
-        language: 'cpp',
-        label: 'C++',
+        language: 'cpp', label: 'C++',
         lines: [
           'void insertionSort(vector<int>& arr) {',
           '  int n = arr.size();',
@@ -158,8 +140,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       python: {
-        language: 'python',
-        label: 'Python',
+        language: 'python', label: 'Python',
         lines: [
           'def insertion_sort(arr):',
           '    for i in range(1, len(arr)):',
@@ -172,8 +153,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       rust: {
-        language: 'rust',
-        label: 'Rust',
+        language: 'rust', label: 'Rust',
         lines: [
           'fn insertion_sort(arr: &mut [i32]) {',
           '    for i in 1..arr.len() {',
@@ -189,20 +169,13 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
     },
-    lineMap: {
-      outer: [3],
-      compare: [6],
-      shift: [7],
-      insert: [10],
-      done: [12],
-    },
+    lineMap: { outer: [3], compare: [6], shift: [7], insert: [10], done: [12] },
   },
   {
     algorithm: 'merge-sort',
     samples: {
       cpp: {
-        language: 'cpp',
-        label: 'C++',
+        language: 'cpp', label: 'C++',
         lines: [
           'void mergeSort(vector<int>& arr, int l, int r) {',
           '  if (l >= r) return;',
@@ -227,8 +200,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       python: {
-        language: 'python',
-        label: 'Python',
+        language: 'python', label: 'Python',
         lines: [
           'def merge_sort(arr, l, r):',
           '    if l >= r:',
@@ -260,8 +232,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       rust: {
-        language: 'rust',
-        label: 'Rust',
+        language: 'rust', label: 'Rust',
         lines: [
           'fn merge_sort(arr: &mut [i32]) {',
           '    if arr.len() <= 1 { return; }',
@@ -290,20 +261,13 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
     },
-    lineMap: {
-      'merge-sort': [1],
-      compare: [14],
-      'write-left': [15],
-      'write-right': [17],
-      done: [9],
-    },
+    lineMap: { 'merge-sort': [1], compare: [14], 'write-left': [15], 'write-right': [17], done: [9] },
   },
   {
     algorithm: 'quick-sort',
     samples: {
       cpp: {
-        language: 'cpp',
-        label: 'C++',
+        language: 'cpp', label: 'C++',
         lines: [
           'void quickSort(vector<int>& arr, int low, int high) {',
           '  if (low < high) {',
@@ -327,8 +291,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       python: {
-        language: 'python',
-        label: 'Python',
+        language: 'python', label: 'Python',
         lines: [
           'def quick_sort(arr, low, high):',
           '    if low < high:',
@@ -348,8 +311,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       rust: {
-        language: 'rust',
-        label: 'Rust',
+        language: 'rust', label: 'Rust',
         lines: [
           'fn quick_sort(arr: &mut [i32]) {',
           '    if arr.len() > 1 {',
@@ -374,26 +336,25 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
     },
-    lineMap: {
-      'quick-sort': [1],
-      compare: [12],
-      swap: [13],
-      'pivot-swap': [17],
-      done: [7],
-    },
+    lineMap: { 'quick-sort': [1], compare: [12], swap: [13], 'pivot-swap': [17], done: [7] },
   },
   {
     algorithm: 'heap-sort',
     samples: {
       cpp: {
-        language: 'cpp',
-        label: 'C++',
+        language: 'cpp', label: 'C++',
         lines: [
+          'void heapify(vector<int>& arr, int n, int i) {',
+          '  int largest = i, l = 2*i+1, r = 2*i+2;',
+          '  if (l < n && arr[l] > arr[largest]) largest = l;',
+          '  if (r < n && arr[r] > arr[largest]) largest = r;',
+          '  if (largest != i) { swap(arr[i], arr[largest]);',
+          '    heapify(arr, n, largest); }',
+          '}',
           'void heapSort(vector<int>& arr) {',
           '  int n = arr.size();',
-          '  for (int i = n / 2 - 1; i >= 0; i--)',
-          '    heapify(arr, n, i);',
-          '  for (int i = n - 1; i > 0; i--) {',
+          '  for (int i = n/2-1; i >= 0; i--) heapify(arr,n,i);',
+          '  for (int i = n-1; i > 0; i--) {',
           '    swap(arr[0], arr[i]);',
           '    heapify(arr, i, 0);',
           '  }',
@@ -401,27 +362,37 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       python: {
-        language: 'python',
-        label: 'Python',
+        language: 'python', label: 'Python',
         lines: [
+          'def heapify(arr, n, i):',
+          '    largest, l, r = i, 2*i+1, 2*i+2',
+          '    if l < n and arr[l] > arr[largest]: largest = l',
+          '    if r < n and arr[r] > arr[largest]: largest = r',
+          '    if largest != i:',
+          '        arr[i], arr[largest] = arr[largest], arr[i]',
+          '        heapify(arr, n, largest)',
           'def heap_sort(arr):',
           '    n = len(arr)',
-          '    for i in range(n // 2 - 1, -1, -1):',
-          '        heapify(arr, n, i)',
-          '    for i in range(n - 1, 0, -1):',
+          '    for i in range(n//2-1, -1, -1): heapify(arr,n,i)',
+          '    for i in range(n-1, 0, -1):',
           '        arr[0], arr[i] = arr[i], arr[0]',
           '        heapify(arr, i, 0)',
         ],
       },
       rust: {
-        language: 'rust',
-        label: 'Rust',
+        language: 'rust', label: 'Rust',
         lines: [
+          'fn heapify(arr: &mut [i32], n: usize, i: usize) {',
+          '    let mut largest = i;',
+          '    let (l, r) = (2*i+1, 2*i+2);',
+          '    if l < n && arr[l] > arr[largest] { largest = l; }',
+          '    if r < n && arr[r] > arr[largest] { largest = r; }',
+          '    if largest != i { arr.swap(i, largest);',
+          '      heapify(arr, n, largest); }',
+          '}',
           'fn heap_sort(arr: &mut [i32]) {',
           '    let n = arr.len();',
-          '    for i in (0..n / 2).rev() {',
-          '        heapify(arr, n, i);',
-          '    }',
+          '    for i in (0..n/2).rev() { heapify(arr,n,i); }',
           '    for i in (1..n).rev() {',
           '        arr.swap(0, i);',
           '        heapify(arr, i, 0);',
@@ -430,21 +401,78 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
     },
-    lineMap: {
-      'heap-sort': [1],
-      compare: [1],
-      'extract-max': [6],
-      heapify: [3],
-      sink: [7],
-      done: [9],
-    },
+    lineMap: { 'heap-sort': [9], compare: [2], 'extract-max': [12], heapify: [3], sink: [5], done: [15] },
   },
+  {
+    algorithm: 'shell-sort',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void shellSort(vector<int>& arr) {',
+          '  int n = arr.size();',
+          '  for (int gap = n / 2; gap > 0; gap /= 2) {',
+          '    for (int i = gap; i < n; i++) {',
+          '      int temp = arr[i];',
+          '      int j = i;',
+          '      while (j >= gap && arr[j - gap] > temp) {',
+          '        arr[j] = arr[j - gap];',
+          '        j -= gap;',
+          '      }',
+          '      arr[j] = temp;',
+          '    }',
+          '  }',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def shell_sort(arr):',
+          '    n = len(arr)',
+          '    gap = n // 2',
+          '    while gap > 0:',
+          '        for i in range(gap, n):',
+          '            temp = arr[i]',
+          '            j = i',
+          '            while j >= gap and arr[j - gap] > temp:',
+          '                arr[j] = arr[j - gap]',
+          '                j -= gap',
+          '            arr[j] = temp',
+          '        gap //= 2',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn shell_sort(arr: &mut [i32]) {',
+          '    let n = arr.len();',
+          '    let mut gap = n / 2;',
+          '    while gap > 0 {',
+          '        for i in gap..n {',
+          '            let temp = arr[i];',
+          '            let mut j = i;',
+          '            while j >= gap && arr[j - gap] > temp {',
+          '                arr[j] = arr[j - gap];',
+          '                j -= gap;',
+          '            }',
+          '            arr[j] = temp;',
+          '        }',
+          '        gap /= 2;',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { 'shell-sort': [1], gap: [3], 'select-key': [6], compare: [8], shift: [9], insert: [12], done: [14] },
+  },
+
+  // ===== SEARCHING =====
   {
     algorithm: 'linear-search',
     samples: {
       cpp: {
-        language: 'cpp',
-        label: 'C++',
+        language: 'cpp', label: 'C++',
         lines: [
           'int linearSearch(vector<int>& arr, int target) {',
           '  for (int i = 0; i < arr.size(); i++) {',
@@ -455,8 +483,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       python: {
-        language: 'python',
-        label: 'Python',
+        language: 'python', label: 'Python',
         lines: [
           'def linear_search(arr, target):',
           '    for i, v in enumerate(arr):',
@@ -466,8 +493,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       rust: {
-        language: 'rust',
-        label: 'Rust',
+        language: 'rust', label: 'Rust',
         lines: [
           'fn linear_search(arr: &[i32], target: i32) -> Option<usize> {',
           '    for (i, &v) in arr.iter().enumerate() {',
@@ -480,19 +506,13 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
     },
-    lineMap: {
-      'linear-search': [1],
-      compare: [3],
-      found: [3],
-      done: [5],
-    },
+    lineMap: { 'linear-search': [1], compare: [3], found: [3], done: [5] },
   },
   {
     algorithm: 'binary-search',
     samples: {
       cpp: {
-        language: 'cpp',
-        label: 'C++',
+        language: 'cpp', label: 'C++',
         lines: [
           'int binarySearch(vector<int>& arr, int target) {',
           '  int l = 0, r = arr.size() - 1;',
@@ -507,8 +527,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       python: {
-        language: 'python',
-        label: 'Python',
+        language: 'python', label: 'Python',
         lines: [
           'def binary_search(arr, target):',
           '    l, r = 0, len(arr) - 1',
@@ -524,8 +543,7 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
       rust: {
-        language: 'rust',
-        label: 'Rust',
+        language: 'rust', label: 'Rust',
         lines: [
           'fn binary_search(arr: &[i32], target: i32) -> Option<usize> {',
           '    let mut l = 0;',
@@ -541,13 +559,759 @@ export const codeSamples: AlgorithmCode[] = [
         ],
       },
     },
-    lineMap: {
-      'binary-search': [1],
-      mid: [4],
-      compare: [5],
-      found: [5],
-      done: [10],
+    lineMap: { 'binary-search': [1], mid: [4], compare: [5], found: [5], done: [10] },
+  },
+
+  // ===== LINEAR =====
+  {
+    algorithm: 'array-insert',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void arrayInsert(vector<int>& arr, int val) {',
+          '  arr.push_back(val);',
+          '  // 在数组末尾添加元素',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def array_insert(arr, val):',
+          '    arr.append(val)',
+          '    # 在数组末尾添加元素',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn array_insert(arr: &mut Vec<i32>, val: i32) {',
+          '    arr.push(val);',
+          '    // 在数组末尾添加元素',
+          '}',
+        ],
+      },
     },
+    lineMap: { insert: [1], append: [2], done: [3] },
+  },
+  {
+    algorithm: 'array-delete',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void arrayDelete(vector<int>& arr, int idx) {',
+          '  if (idx < 0 || idx >= arr.size()) return;',
+          '  for (int i = idx; i < arr.size() - 1; i++)',
+          '    arr[i] = arr[i + 1];',
+          '  arr.pop_back();',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def array_delete(arr, idx):',
+          '    if 0 <= idx < len(arr):',
+          '        for i in range(idx, len(arr) - 1):',
+          '            arr[i] = arr[i + 1]',
+          '        arr.pop()',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn array_delete(arr: &mut Vec<i32>, idx: usize) {',
+          '    if idx < arr.len() {',
+          '        arr.remove(idx);',
+          '        // 删除后元素前移',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { delete: [1], select: [2], done: [5] },
+  },
+  {
+    algorithm: 'linked-list-traverse',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'struct ListNode { int val; ListNode* next; };',
+          'void traverse(ListNode* head) {',
+          '  ListNode* cur = head;',
+          '  while (cur != nullptr) {',
+          '    visit(cur->val);',
+          '    cur = cur->next;',
+          '  }',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'class ListNode:',
+          '    def __init__(self, val):',
+          '        self.val = val',
+          '        self.next = None',
+          'def traverse(head):',
+          '    cur = head',
+          '    while cur:',
+          '        visit(cur.val)',
+          '        cur = cur.next',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'struct ListNode { val: i32, next: Option<Box<ListNode>> }',
+          'fn traverse(mut cur: &Option<Box<ListNode>>) {',
+          '    while let Some(node) = cur {',
+          '        visit(node.val);',
+          '        cur = &node.next;',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { traverse: [2], visit: [4], done: [7] },
+  },
+
+  // ===== STACK & QUEUE =====
+  {
+    algorithm: 'stack-push-pop',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void stackDemo(vector<int>& arr) {',
+          '  stack<int> s;',
+          '  for (int v : arr) s.push(v);',
+          '  while (!s.empty()) {',
+          '    int top = s.top();',
+          '    s.pop();',
+          '  }',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def stack_demo(arr):',
+          '    stack = []',
+          '    for v in arr:',
+          '        stack.append(v)  # push',
+          '    while stack:',
+          '        top = stack.pop()',
+          '        # process top',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn stack_demo(arr: &[i32]) {',
+          '    let mut stack = Vec::new();',
+          '    for &v in arr { stack.push(v); }',
+          '    while let Some(top) = stack.pop() {',
+          '        // process top',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { stack: [1], push: [3], pop: [5], done: [7] },
+  },
+  {
+    algorithm: 'queue-enqueue-dequeue',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void queueDemo(vector<int>& arr) {',
+          '  queue<int> q;',
+          '  for (int v : arr) q.push(v);',
+          '  while (!q.empty()) {',
+          '    int front = q.front();',
+          '    q.pop();',
+          '  }',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def queue_demo(arr):',
+          '    from collections import deque',
+          '    q = deque()',
+          '    for v in arr:',
+          '        q.append(v)  # enqueue',
+          '    while q:',
+          '        front = q.popleft()  # dequeue',
+          '        # process front',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'use std::collections::VecDeque;',
+          'fn queue_demo(arr: &[i32]) {',
+          '    let mut q = VecDeque::new();',
+          '    for &v in arr { q.push_back(v); }',
+          '    while let Some(front) = q.pop_front() {',
+          '        // process front',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { queue: [2], enqueue: [4], dequeue: [5], done: [7] },
+  },
+
+  // ===== RECURSIVE =====
+  {
+    algorithm: 'factorial',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'int factorial(int n) {',
+          '  if (n <= 1) return 1;',
+          '  int result = 1;',
+          '  for (int i = 2; i <= n; i++)',
+          '    result *= i;',
+          '  return result;',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def factorial(n):',
+          '    if n <= 1:',
+          '        return 1',
+          '    result = 1',
+          '    for i in range(2, n + 1):',
+          '        result *= i',
+          '    return result',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn factorial(n: u64) -> u64 {',
+          '    if n <= 1 { return 1; }',
+          '    let mut result = 1;',
+          '    for i in 2..=n {',
+          '        result *= i;',
+          '    }',
+          '    result',
+          '}',
+        ],
+      },
+    },
+    lineMap: { factorial: [1], multiply: [5], done: [7] },
+  },
+  {
+    algorithm: 'fibonacci',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'int fibonacci(int n) {',
+          '  if (n <= 1) return n;',
+          '  vector<int> dp(n + 1);',
+          '  dp[0] = 0; dp[1] = 1;',
+          '  for (int i = 2; i <= n; i++)',
+          '    dp[i] = dp[i - 1] + dp[i - 2];',
+          '  return dp[n];',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def fibonacci(n):',
+          '    if n <= 1:',
+          '        return n',
+          '    dp = [0] * (n + 1)',
+          '    dp[1] = 1',
+          '    for i in range(2, n + 1):',
+          '        dp[i] = dp[i - 1] + dp[i - 2]',
+          '    return dp[n]',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn fibonacci(n: usize) -> usize {',
+          '    if n <= 1 { return n; }',
+          '    let mut dp = vec![0; n + 1];',
+          '    dp[1] = 1;',
+          '    for i in 2..=n {',
+          '        dp[i] = dp[i - 1] + dp[i - 2];',
+          '    }',
+          '    dp[n]',
+          '}',
+        ],
+      },
+    },
+    lineMap: { fibonacci: [1], compute: [6], done: [8] },
+  },
+  {
+    algorithm: 'tower-of-hanoi',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void hanoi(int n, char from, char to, char aux) {',
+          '  if (n == 0) return;',
+          '  hanoi(n - 1, from, aux, to);',
+          '  printf("Move disk %d from %c to %c\\n", n, from, to);',
+          '  hanoi(n - 1, aux, to, from);',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def hanoi(n, from_peg, to_peg, aux_peg):',
+          '    if n == 0:',
+          '        return',
+          '    hanoi(n - 1, from_peg, aux_peg, to_peg)',
+          '    print(f"Move disk {n} from {from_peg} to {to_peg}")',
+          '    hanoi(n - 1, aux_peg, to_peg, from_peg)',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn hanoi(n: usize, from: char, to: char, aux: char) {',
+          '    if n == 0 { return; }',
+          '    hanoi(n - 1, from, aux, to);',
+          '    println!("Move disk {n} from {from} to {to}");',
+          '    hanoi(n - 1, aux, to, from);',
+          '}',
+        ],
+      },
+    },
+    lineMap: { hanoi: [1], move: [4], done: [6] },
+  },
+
+  // ===== TREE =====
+  {
+    algorithm: 'bst-insert',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'struct Node { int val; Node *left, *right; };',
+          'Node* bstInsert(Node* root, int val) {',
+          '  if (!root) return new Node{val, 0, 0};',
+          '  if (val < root->val)',
+          '    root->left = bstInsert(root->left, val);',
+          '  else',
+          '    root->right = bstInsert(root->right, val);',
+          '  return root;',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'class Node:',
+          '    def __init__(self, val):',
+          '        self.val = val',
+          '        self.left = self.right = None',
+          'def bst_insert(root, val):',
+          '    if not root: return Node(val)',
+          '    if val < root.val:',
+          '        root.left = bst_insert(root.left, val)',
+          '    else:',
+          '        root.right = bst_insert(root.right, val)',
+          '    return root',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'struct Node { val: i32, left: Option<Box<Node>>, right: Option<Box<Node>> }',
+          'fn bst_insert(root: Option<Box<Node>>, val: i32) -> Option<Box<Node>> {',
+          '    match root {',
+          '        None => Some(Box::new(Node{val, left:None, right:None})),',
+          '        Some(mut n) => {',
+          '            if val < n.val { n.left = bst_insert(n.left, val); }',
+          '            else { n.right = bst_insert(n.right, val); }',
+          '            Some(n)',
+          '        }',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { 'bst-insert': [5], insert: [6], root: [7], compare: [8], 'left-child': [9], 'right-child': [10], done: [11] },
+  },
+  {
+    algorithm: 'bst-search',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'bool bstSearch(Node* root, int target) {',
+          '  Node* cur = root;',
+          '  while (cur) {',
+          '    if (cur->val == target) return true;',
+          '    if (target < cur->val) cur = cur->left;',
+          '    else cur = cur->right;',
+          '  }',
+          '  return false;',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def bst_search(root, target):',
+          '    cur = root',
+          '    while cur:',
+          '        if cur.val == target:',
+          '            return True',
+          '        if target < cur.val:',
+          '            cur = cur.left',
+          '        else:',
+          '            cur = cur.right',
+          '    return False',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn bst_search(root: &Option<Box<Node>>, target: i32) -> bool {',
+          '    let mut cur = root;',
+          '    while let Some(n) = cur {',
+          '        if n.val == target { return true; }',
+          '        if target < n.val { cur = &n.left; }',
+          '        else { cur = &n.right; }',
+          '    }',
+          '    false',
+          '}',
+        ],
+      },
+    },
+    lineMap: { 'bst-search': [1], compare: [4], found: [4], done: [8] },
+  },
+  {
+    algorithm: 'heap-insert',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void heapInsert(vector<int>& heap, int val) {',
+          '  heap.push_back(val);',
+          '  int i = heap.size() - 1;',
+          '  while (i > 0 && heap[(i-1)/2] < heap[i]) {',
+          '    swap(heap[i], heap[(i-1)/2]);',
+          '    i = (i - 1) / 2;',
+          '  }',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def heap_insert(heap, val):',
+          '    heap.append(val)',
+          '    i = len(heap) - 1',
+          '    while i > 0 and heap[(i-1)//2] < heap[i]:',
+          '        heap[i], heap[(i-1)//2] = heap[(i-1)//2], heap[i]',
+          '        i = (i - 1) // 2',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn heap_insert(heap: &mut Vec<i32>, val: i32) {',
+          '    heap.push(val);',
+          '    let mut i = heap.len() - 1;',
+          '    while i > 0 && heap[(i-1)/2] < heap[i] {',
+          '        heap.swap(i, (i-1)/2);',
+          '        i = (i - 1) / 2;',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { 'heap-insert': [1], insert: [2], 'sift-up': [5], done: [7] },
+  },
+
+  // ===== GRAPH =====
+  {
+    algorithm: 'bfs',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void bfs(vector<vector<int>>& graph, int start) {',
+          '  vector<bool> visited(graph.size(), false);',
+          '  queue<int> q;',
+          '  visited[start] = true; q.push(start);',
+          '  while (!q.empty()) {',
+          '    int v = q.front(); q.pop();',
+          '    for (int u : graph[v])',
+          '      if (!visited[u]) { visited[u]=true;',
+          '        q.push(u); }',
+          '  }',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def bfs(graph, start):',
+          '    from collections import deque',
+          '    visited = [False] * len(graph)',
+          '    q = deque([start])',
+          '    visited[start] = True',
+          '    while q:',
+          '        v = q.popleft()',
+          '        for u in graph[v]:',
+          '            if not visited[u]:',
+          '                visited[u] = True',
+          '                q.append(u)',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn bfs(graph: &[Vec<usize>], start: usize) {',
+          '    let mut visited = vec![false; graph.len()];',
+          '    let mut q = VecDeque::new();',
+          '    visited[start] = true; q.push_back(start);',
+          '    while let Some(v) = q.pop_front() {',
+          '        for &u in &graph[v] {',
+          '            if !visited[u] { visited[u]=true;',
+          '                q.push_back(u); }',
+          '        }',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { bfs: [1], visit: [6], enqueue: [8], done: [10] },
+  },
+  {
+    algorithm: 'dfs',
+    samples: {
+      cpp: {
+        language: 'cpp', label: 'C++',
+        lines: [
+          'void dfs(vector<vector<int>>& graph, int v,',
+          '         vector<bool>& visited) {',
+          '  visited[v] = true;',
+          '  for (int u : graph[v])',
+          '    if (!visited[u])',
+          '      dfs(graph, u, visited);',
+          '}',
+        ],
+      },
+      python: {
+        language: 'python', label: 'Python',
+        lines: [
+          'def dfs(graph, v, visited):',
+          '    visited[v] = True',
+          '    for u in graph[v]:',
+          '        if not visited[u]:',
+          '            dfs(graph, u, visited)',
+        ],
+      },
+      rust: {
+        language: 'rust', label: 'Rust',
+        lines: [
+          'fn dfs(graph: &[Vec<usize>], v: usize, visited: &mut [bool]) {',
+          '    visited[v] = true;',
+          '    for &u in &graph[v] {',
+          '        if !visited[u] {',
+          '            dfs(graph, u, visited);',
+          '        }',
+          '    }',
+          '}',
+        ],
+      },
+    },
+    lineMap: { dfs: [1], visit: [3], done: [7] },
+  },
+
+  // ===== NEW SORTING =====
+  {
+    algorithm: 'counting-sort',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['void countingSort(vector<int>& arr) {','  int maxV = *max_element(arr.begin(),arr.end());','  int minV = *min_element(arr.begin(),arr.end());','  int range = maxV - minV + 1;','  vector<int> count(range), output(arr.size());','  for (int v : arr) count[v - minV]++;','  for (int i = 1; i < range; i++) count[i] += count[i-1];','  for (int i = arr.size()-1; i >= 0; i--) {','    output[count[arr[i]-minV]-1] = arr[i];','    count[arr[i]-minV]--;','  }','  arr = output;','}']},
+      python: { language:'python',label:'Python',lines:['def counting_sort(arr):','    max_v, min_v = max(arr), min(arr)','    range_v = max_v - min_v + 1','    count = [0] * range_v','    output = [0] * len(arr)','    for v in arr: count[v - min_v] += 1','    for i in range(1, range_v): count[i] += count[i-1]','    for v in reversed(arr):','        output[count[v-min_v]-1] = v','        count[v-min_v] -= 1','    return output']},
+      rust: { language:'rust',label:'Rust',lines:['fn counting_sort(arr: &mut [i32]) {','    let max_v = *arr.iter().max().unwrap_or(&0);','    let min_v = *arr.iter().min().unwrap_or(&0);','    let range = (max_v - min_v + 1) as usize;','    let mut count = vec![0; range];','    let mut output = vec![0; arr.len()];','    for &v in arr.iter() { count[(v-min_v) as usize] += 1; }','    for i in 1..range { count[i] += count[i-1]; }','    for &v in arr.iter().rev() {','        let idx = (v - min_v) as usize;','        count[idx] -= 1;','        output[count[idx]] = v;','    }','    arr.clone_from_slice(&output);','}']},
+    },
+    lineMap: { 'counting-sort':[1], 'find-range':[4], count:[6], 'prefix-sum':[7], place:[9], done:[14] },
+  },
+  {
+    algorithm: 'bucket-sort',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['void bucketSort(vector<int>& arr) {','  int n = arr.size(), maxV=*max_element(arr.begin(),arr.end());','  int minV=*min_element(arr.begin(),arr.end());','  int k = sqrt(n);','  vector<vector<int>> buckets(k);','  for (int v : arr) {','    int idx = (v-minV)*(k-1)/(maxV-minV+1);','    buckets[idx].push_back(v);','  }','  int p = 0;','  for (auto& b : buckets) {','    sort(b.begin(), b.end());','    for (int v : b) arr[p++] = v;','  }','}']},
+      python: { language:'python',label:'Python',lines:['def bucket_sort(arr):','    n = len(arr)','    k = int(n ** 0.5)','    max_v, min_v = max(arr), min(arr)','    buckets = [[] for _ in range(k)]','    for v in arr:','        idx = (v-min_v)*(k-1)//(max_v-min_v+1)','        buckets[idx].append(v)','    arr.clear()','    for b in buckets:','        b.sort()','        arr.extend(b)']},
+      rust: { language:'rust',label:'Rust',lines:['fn bucket_sort(arr: &mut [i32]) {','    let n = arr.len();','    let max_v = *arr.iter().max().unwrap_or(&0);','    let min_v = *arr.iter().min().unwrap_or(&0);','    let k = (n as f64).sqrt() as usize;','    let mut buckets: Vec<Vec<i32>> = vec![vec![]; k];','    for &v in arr.iter() {','        let idx = ((v-min_v)*(k as i32 -1)/(max_v-min_v+1).max(1)) as usize;','        buckets[idx.min(k-1)].push(v);','    }','    let mut p = 0;','    for b in buckets.iter_mut() { b.sort(); for &v in b.iter() { arr[p]=v; p+=1; } }','}']},
+    },
+    lineMap: { 'bucket-sort':[1], 'create-buckets':[5], distribute:[8], 'sort-bucket':[12], done:[13] },
+  },
+  {
+    algorithm: 'radix-sort',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['void radixSort(vector<int>& arr) {','  int maxV = *max_element(arr.begin(),arr.end());','  for (int exp = 1; maxV/exp > 0; exp *= 10) {','    vector<int> output(arr.size());','    int count[10] = {0};','    for (int v : arr) count[(v/exp)%10]++;','    for (int i = 1; i < 10; i++) count[i] += count[i-1];','    for (int i = arr.size()-1; i >= 0; i--) {','      output[count[(arr[i]/exp)%10]-1] = arr[i];','      count[(arr[i]/exp)%10]--;','    }','    arr = output;','  }','}']},
+      python: { language:'python',label:'Python',lines:['def radix_sort(arr):','    max_v = max(arr)','    exp = 1','    while max_v // exp > 0:','        output = [0] * len(arr)','        count = [0] * 10','        for v in arr: count[(v//exp)%10] += 1','        for i in range(1,10): count[i] += count[i-1]','        for v in reversed(arr):','            count[(v//exp)%10] -= 1','            output[count[(v//exp)%10]] = v','        arr[:] = output','        exp *= 10']},
+      rust: { language:'rust',label:'Rust',lines:['fn radix_sort(arr: &mut [i32]) {','    let max_v = *arr.iter().max().unwrap_or(&0);','    let mut exp = 1;','    let mut output = vec![0; arr.len()];','    while max_v / exp > 0 {','        let mut count = [0usize; 10];','        for &v in arr.iter() { count[((v/exp)%10) as usize] += 1; }','        for i in 1..10 { count[i] += count[i-1]; }','        for &v in arr.iter().rev() {','            let d = ((v/exp)%10) as usize; count[d] -= 1;','            output[count[d]] = v;','        }','        arr.clone_from_slice(&output);','        exp *= 10;','    }','}']},
+    },
+    lineMap: { 'radix-sort':[1], digit:[4], place:[11], done:[16] },
+  },
+
+  // ===== NEW SEARCHING =====
+  {
+    algorithm: 'interpolation-search',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['int interpolationSearch(vector<int>& arr,int t){','  int lo=0, hi=arr.size()-1;','  while(lo<=hi&&t>=arr[lo]&&t<=arr[hi]){','    int pos=lo+(t-arr[lo])*(hi-lo)/(arr[hi]-arr[lo]);','    if(arr[pos]==t) return pos;','    if(arr[pos]<t) lo=pos+1; else hi=pos-1;','  }','  return -1;','}']},
+      python: { language:'python',label:'Python',lines:['def interpolation_search(arr, t):','    lo, hi = 0, len(arr)-1','    while lo <= hi and arr[lo] <= t <= arr[hi]:','        pos = lo + (t-arr[lo])*(hi-lo)//(arr[hi]-arr[lo])','        if arr[pos] == t: return pos','        if arr[pos] < t: lo = pos+1','        else: hi = pos-1','    return -1']},
+      rust: { language:'rust',label:'Rust',lines:['fn interpolation_search(arr: &[i32], t: i32) -> Option<usize> {','    let mut lo = 0;','    let mut hi = (arr.len() as i32)-1;','    while lo<=hi && t>=arr[lo as usize] && t<=arr[hi as usize] {','        let pos = lo+(t-arr[lo as usize])*(hi-lo)/','            (arr[hi as usize]-arr[lo as usize]).max(1);','        if arr[pos as usize]==t { return Some(pos as usize); }','        if arr[pos as usize]<t { lo=pos+1; } else { hi=pos-1; }','    }','    None','}']},
+    },
+    lineMap: { 'interpolation-search':[1], probe:[4], found:[5], done:[10] },
+  },
+  {
+    algorithm: 'hash-search',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['int hashSearch(vector<int>& arr, int t) {','  unordered_map<int,int> map;','  for(int i=0;i<arr.size();i++) map[arr[i]]=i;','  if(map.count(t)) return map[t];','  return -1;','}']},
+      python: { language:'python',label:'Python',lines:['def hash_search(arr, t):','    table = {v: i for i, v in enumerate(arr)}','    return table.get(t, -1)']},
+      rust: { language:'rust',label:'Rust',lines:['fn hash_search(arr: &[i32], t: i32) -> Option<usize> {','    use std::collections::HashMap;','    let map: HashMap<i32,usize> = arr.iter().enumerate()','        .map(|(i,&v)| (v,i)).collect();','    map.get(&t).copied()','}']},
+    },
+    lineMap: { 'hash-search':[1], build:[3], query:[3], found:[4], done:[5] },
+  },
+
+  // ===== TREE NEW =====
+  {
+    algorithm: 'avl-insert',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['struct AVLNode { int val, h; AVLNode *l,*r; };','int height(AVLNode* n) { return n?n->h:0; }','AVLNode* rotateRight(AVLNode* y) {','  AVLNode* x=y->l; y->l=x->r; x->r=y;','  y->h=1+max(height(y->l),height(y->r));','  x->h=1+max(height(x->l),height(x->r)); return x;','}','AVLNode* avlInsert(AVLNode* n,int v) {','  if(!n) return new AVLNode{v,1,0,0};','  if(v<n->val) n->l=avlInsert(n->l,v);','  else n->r=avlInsert(n->r,v);','  n->h=1+max(height(n->l),height(n->r));','  int b=height(n->l)-height(n->r);','  if(b>1&&v<n->l->val) return rotateRight(n);','  // ... similar cases ...','  return n;','}']},
+      python: { language:'python',label:'Python',lines:['class AVLNode:','    def __init__(self,v): self.val=v; self.h=1;','        self.left=self.right=None','def avl_insert(node, v):','    if not node: return AVLNode(v)','    if v < node.val: node.left = avl_insert(node.left,v)','    else: node.right = avl_insert(node.right,v)','    node.h = 1 + max(h(node.left), h(node.right))','    bal = h(node.left) - h(node.right)','    if bal > 1 and v < node.left.val:','        return rotate_right(node)','    # ... LL,RH,RL,LL cases ...','    return node']},
+      rust: { language:'rust',label:'Rust',lines:['struct AVLNode { val: i32, h: i32,','    left: Option<Box<AVLNode>>,','    right: Option<Box<AVLNode>> }','fn avl_insert(n: Option<Box<AVLNode>>, v: i32)','    -> Option<Box<AVLNode>> {','    // BST insert + height update +','    // rotation check (LL,LH,RL,LL)','    todo!()','}']},
+    },
+    lineMap: { 'avl-insert':[5], 'insert-val':[6], compare:[7], rotate:[11], done:[16] },
+  },
+  {
+    algorithm: 'bst-preorder',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['void preorder(TreeNode* root) {','  if (!root) return;','  visit(root->val);','  preorder(root->left);','  preorder(root->right);','}']},
+      python: { language:'python',label:'Python',lines:['def preorder(root):','    if not root: return','    visit(root.val)','    preorder(root.left)','    preorder(root.right)']},
+      rust: { language:'rust',label:'Rust',lines:['fn preorder(root: &Option<Box<Node>>) {','    if let Some(n) = root {','        visit(n.val);','        preorder(&n.left);','        preorder(&n.right);','    }','}']},
+    },
+    lineMap: { preorder:[1], 'visit-pre':[3], done:[6] },
+  },
+  {
+    algorithm: 'bst-inorder',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['void inorder(TreeNode* root) {','  if (!root) return;','  inorder(root->left);','  visit(root->val);','  inorder(root->right);','}']},
+      python: { language:'python',label:'Python',lines:['def inorder(root):','    if not root: return','    inorder(root.left)','    visit(root.val)','    inorder(root.right)']},
+      rust: { language:'rust',label:'Rust',lines:['fn inorder(root: &Option<Box<Node>>) {','    if let Some(n) = root {','        inorder(&n.left);','        visit(n.val);','        inorder(&n.right);','    }','}']},
+    },
+    lineMap: { inorder:[1], 'visit-in':[4], done:[6] },
+  },
+  {
+    algorithm: 'bst-postorder',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['void postorder(TreeNode* root) {','  if (!root) return;','  postorder(root->left);','  postorder(root->right);','  visit(root->val);','}']},
+      python: { language:'python',label:'Python',lines:['def postorder(root):','    if not root: return','    postorder(root.left)','    postorder(root.right)','    visit(root.val)']},
+      rust: { language:'rust',label:'Rust',lines:['fn postorder(root: &Option<Box<Node>>) {','    if let Some(n) = root {','        postorder(&n.left);','        postorder(&n.right);','        visit(n.val);','    }','}']},
+    },
+    lineMap: { postorder:[1], 'visit-post':[5], done:[6] },
+  },
+  {
+    algorithm: 'bst-levelorder',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['void levelorder(TreeNode* root) {','  if (!root) return;','  queue<TreeNode*> q; q.push(root);','  while (!q.empty()) {','    TreeNode* n = q.front(); q.pop();','    visit(n->val);','    if (n->left) q.push(n->left);','    if (n->right) q.push(n->right);','  }','}']},
+      python: { language:'python',label:'Python',lines:['def levelorder(root):','    if not root: return','    from collections import deque','    q = deque([root])','    while q:','        n = q.popleft()','        visit(n.val)','        if n.left: q.append(n.left)','        if n.right: q.append(n.right)']},
+      rust: { language:'rust',label:'Rust',lines:['fn levelorder(root: &Option<Box<Node>>) {','    let mut q = VecDeque::new();','    if let Some(r) = root { q.push_back(r); }','    while let Some(n) = q.pop_front() {','        visit(n.val);','        if let Some(l) = &n.left { q.push_back(l); }','        if let Some(r) = &n.right { q.push_back(r); }','    }','}']},
+    },
+    lineMap: { levelorder:[1], visit:[6], done:[9] },
+  },
+
+  // ===== GRAPH NEW =====
+  {
+    algorithm: 'dijkstra',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['void dijkstra(vector<vector<pair<int,int>>>& g,int s) {','  vector<int> dist(g.size(), INT_MAX);','  priority_queue<pair<int,int>> pq;','  dist[s]=0; pq.push({0,s});','  while(!pq.empty()) {','    auto [d,u]=pq.top(); pq.pop();','    if(d>dist[u]) continue;','    for(auto [v,w]:g[u])','      if(dist[v]>dist[u]+w) {','        dist[v]=dist[u]+w; pq.push({dist[v],v});','      }','  }','}']},
+      python: { language:'python',label:'Python',lines:['def dijkstra(g, s):','    import heapq','    dist = [float("inf")] * len(g)','    dist[s] = 0','    pq = [(0, s)]','    while pq:','        d, u = heapq.heappop(pq)','        if d > dist[u]: continue','        for v, w in g[u]:','            if dist[v] > dist[u] + w:','                dist[v] = dist[u] + w','                heapq.heappush(pq, (dist[v], v))','    return dist']},
+      rust: { language:'rust',label:'Rust',lines:['fn dijkstra(g: &[Vec<(usize,i32)>], s: usize) -> Vec<i32> {','    let mut dist = vec![i32::MAX; g.len()];','    let mut pq = BinaryHeap::new();','    dist[s]=0; pq.push(Reverse((0,s)));','    while let Some(Reverse((d,u))) = pq.pop() {','        if d > dist[u] { continue; }','        for &(v,w) in &g[u] {','            if dist[v] > dist[u] + w {','                dist[v] = dist[u] + w;','                pq.push(Reverse((dist[v],v)));','            }','        }','    }','    dist','}']},
+    },
+    lineMap: { dijkstra:[1], init:[3], visit:[6], relax:[9], done:[14] },
+  },
+  {
+    algorithm: 'topological-sort',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['vector<int> topoSort(vector<vector<int>>& g) {','  int n=g.size(); vector<int> indeg(n,0), res;','  for(auto& es:g) for(int v:es) indeg[v]++;','  queue<int> q;','  for(int i=0;i<n;i++) if(!indeg[i]) q.push(i);','  while(!q.empty()) {','    int u=q.front(); q.pop(); res.push_back(u);','    for(int v:g[u]) if(--indeg[v]==0) q.push(v);','  }','  return res;','}']},
+      python: { language:'python',label:'Python',lines:['def topo_sort(g):','    n = len(g)','    indeg = [0] * n','    for es in g:','        for v in es: indeg[v] += 1','    q = deque([i for i in range(n) if indeg[i]==0])','    res = []','    while q:','        u = q.popleft(); res.append(u)','        for v in g[u]:','            indeg[v] -= 1','            if indeg[v] == 0: q.append(v)','    return res']},
+      rust: { language:'rust',label:'Rust',lines:['fn topo_sort(g: &[Vec<usize>]) -> Vec<usize> {','    let n = g.len();','    let mut indeg = vec![0; n];','    for es in g { for &v in es { indeg[v]+=1; } }','    let mut q: VecDeque<_> = (0..n)','        .filter(|&i| indeg[i]==0).collect();','    let mut res = vec![];','    while let Some(u) = q.pop_front() {','        res.push(u);','        for &v in &g[u] { indeg[v]-=1;','            if indeg[v]==0 { q.push_back(v); } }','    }','    res','}']},
+    },
+    lineMap: { 'topo-sort':[1], 'init-queue':[5], process:[7], enqueue:[10], done:[13] },
+  },
+  {
+    algorithm: 'kruskal',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['int kruskal(vector<tuple<int,int,int>>& edges,int n){','  sort(edges.begin(),edges.end());','  vector<int> parent(n); iota(parent.begin(),parent.end(),0);','  int cost=0;','  for(auto [w,u,v]:edges)','    if(find(parent,u)!=find(parent,v)){','      union_(parent,u,v); cost+=w;','    }','  return cost;','}']},
+      python: { language:'python',label:'Python',lines:['def kruskal(edges, n):','    edges.sort(key=lambda x:x[0])','    parent = list(range(n))','    def find(x):','        if parent[x]!=x: parent[x]=find(parent[x])','        return parent[x]','    cost = 0','    for w, u, v in edges:','        if find(u) != find(v):','            parent[find(u)] = find(v)','            cost += w','    return cost']},
+      rust: { language:'rust',label:'Rust',lines:['fn kruskal(edges: &mut [(i32,usize,usize)], n: usize) -> i32 {','    edges.sort_by_key(|&(w,_,_)| w);','    let mut parent: Vec<usize> = (0..n).collect();','    fn find(p: &mut[usize], x: usize) -> usize {','        if p[x]!=x { p[x]=find(p,p[x]); } p[x]','    }','    let mut cost = 0;','    for &(w,u,v) in edges.iter() {','        if find(&mut parent,u)!=find(&mut parent,v) {','            parent[find(&mut parent,u)]=find(&mut parent,v);','            cost += w;','        }','    }','    cost','}']},
+    },
+    lineMap: { kruskal:[1], consider:[6], select:[8], done:[14] },
+  },
+  {
+    algorithm: 'prim',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['int prim(vector<vector<pair<int,int>>>& g) {','  int n=g.size(), cost=0;','  vector<bool> vis(n);','  priority_queue<pair<int,int>> pq;','  pq.push({0,0});','  while(!pq.empty()) {','    auto [w,u]=pq.top(); pq.pop();','    if(vis[u]) continue; vis[u]=true; cost+=w;','    for(auto [v,w2]:g[u])','      if(!vis[v]) pq.push({w2,v});','  }','  return cost;','}']},
+      python: { language:'python',label:'Python',lines:['def prim(g):','    import heapq','    n = len(g)','    vis = [False] * n','    pq = [(0, 0)]','    cost = 0','    while pq:','        w, u = heapq.heappop(pq)','        if vis[u]: continue','        vis[u] = True; cost += w','        for v, w2 in g[u]:','            if not vis[v]:','                heapq.heappush(pq, (w2, v))','    return cost']},
+      rust: { language:'rust',label:'Rust',lines:['fn prim(g: &[Vec<(usize,i32)>]) -> i32 {','    let n = g.len();','    let mut vis = vec![false; n];','    let mut pq = BinaryHeap::new();','    pq.push(Reverse((0,0)));','    let mut cost = 0;','    while let Some(Reverse((w,u))) = pq.pop() {','        if vis[u] { continue; }','        vis[u] = true; cost += w;','        for &(v,w2) in &g[u] {','            if !vis[v] { pq.push(Reverse((w2,v))); }','        }','    }','    cost','}']},
+    },
+    lineMap: { prim:[1], start:[5], compare:[9], add:[10], done:[14] },
+  },
+
+  // ===== DP =====
+  {
+    algorithm: 'fibonacci-dp',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['int fibonacciDP(int n) {','  if (n <= 1) return n;','  vector<int> dp(n+1);','  dp[0]=0; dp[1]=1;','  for (int i=2; i<=n; i++)','    dp[i]=dp[i-1]+dp[i-2];','  return dp[n];','}']},
+      python: { language:'python',label:'Python',lines:['def fibonacci_dp(n):','    if n <= 1: return n','    dp = [0] * (n+1)','    dp[1] = 1','    for i in range(2, n+1):','        dp[i] = dp[i-1] + dp[i-2]','    return dp[n]']},
+      rust: { language:'rust',label:'Rust',lines:['fn fibonacci_dp(n: usize) -> usize {','    if n <= 1 { return n; }','    let mut dp = vec![0; n+1];','    dp[1] = 1;','    for i in 2..=n {','        dp[i] = dp[i-1] + dp[i-2];','    }','    dp[n]','}']},
+    },
+    lineMap: { 'fib-dp':[1], init:[3], compute:[5], done:[7] },
+  },
+  {
+    algorithm: 'knapsack',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['int knapsack(vector<int>& w,vector<int>& v,int W){','  int n=w.size();','  vector<vector<int>> dp(n+1,vector<int>(W+1));','  for(int i=1;i<=n;i++)','    for(int j=0;j<=W;j++){','      if(w[i-1]<=j)','        dp[i][j]=max(dp[i-1][j],dp[i-1][j-w[i-1]]+v[i-1]);','      else dp[i][j]=dp[i-1][j];','    }','  return dp[n][W];','}']},
+      python: { language:'python',label:'Python',lines:['def knapsack(w, v, W):','    n = len(w)','    dp = [[0]*(W+1) for _ in range(n+1)]','    for i in range(1, n+1):','        for j in range(W+1):','            if w[i-1] <= j:','                dp[i][j]=max(dp[i-1][j],dp[i-1][j-w[i-1]]+v[i-1])','            else: dp[i][j]=dp[i-1][j]','    return dp[n][W]']},
+      rust: { language:'rust',label:'Rust',lines:['fn knapsack(w: &[usize], v: &[i32], cap: usize) -> i32 {','    let n = w.len();','    let mut dp = vec![vec![0; cap+1]; n+1];','    for i in 1..=n {','        for j in 0..=cap {','            if w[i-1] <= j {','                dp[i][j]=dp[i-1][j].max(dp[i-1][j-w[i-1]]+v[i-1]);','            } else { dp[i][j]=dp[i-1][j]; }','        }','    }','    dp[n][cap]','}']},
+    },
+    lineMap: { knapsack:[1], 'dp-update':[6], done:[11] },
+  },
+  {
+    algorithm: 'lcs',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['int lcs(string& a, string& b) {','  int m=a.size(), n=b.size();','  vector<vector<int>> dp(m+1,vector<int>(n+1));','  for(int i=1;i<=m;i++)','    for(int j=1;j<=n;j++)','      if(a[i-1]==b[j-1]) dp[i][j]=dp[i-1][j-1]+1;','      else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);','  return dp[m][n];','}']},
+      python: { language:'python',label:'Python',lines:['def lcs(a, b):','    m, n = len(a), len(b)','    dp = [[0]*(n+1) for _ in range(m+1)]','    for i in range(1, m+1):','        for j in range(1, n+1):','            if a[i-1]==b[j-1]: dp[i][j]=dp[i-1][j-1]+1','            else: dp[i][j]=max(dp[i-1][j],dp[i][j-1])','    return dp[m][n]']},
+      rust: { language:'rust',label:'Rust',lines:['fn lcs(a: &[u8], b: &[u8]) -> usize {','    let (m,n) = (a.len(), b.len());','    let mut dp = vec![vec![0; n+1]; m+1];','    for i in 1..=m { for j in 1..=n {','        if a[i-1]==b[j-1] { dp[i][j]=dp[i-1][j-1]+1; }','        else { dp[i][j]=dp[i-1][j].max(dp[i][j-1]); }','    }}','    dp[m][n]','}']},
+    },
+    lineMap: { lcs:[1], 'dp-cell':[6], done:[8] },
+  },
+  {
+    algorithm: 'lis',
+    samples: {
+      cpp: { language:'cpp',label:'C++',lines:['int lis(vector<int>& arr) {','  int n=arr.size(), ans=1;','  vector<int> dp(n,1);','  for(int i=0;i<n;i++)','    for(int j=0;j<i;j++)','      if(arr[j]<arr[i])','        dp[i]=max(dp[i],dp[j]+1);','  return *max_element(dp.begin(),dp.end());','}']},
+      python: { language:'python',label:'Python',lines:['def lis(arr):','    n = len(arr)','    dp = [1] * n','    for i in range(n):','        for j in range(i):','            if arr[j] < arr[i]:','                dp[i] = max(dp[i], dp[j] + 1)','    return max(dp)']},
+      rust: { language:'rust',label:'Rust',lines:['fn lis(arr: &[i32]) -> usize {','    let n = arr.len();','    let mut dp = vec![1; n];','    for i in 0..n { for j in 0..i {','        if arr[j] < arr[i] {','            dp[i] = dp[i].max(dp[j] + 1);','        }','    }}','    dp.into_iter().max().unwrap_or(0)','}']},
+    },
+    lineMap: { lis:[1], init:[3], compare:[5], update:[6], done:[9] },
   },
 ];
 
